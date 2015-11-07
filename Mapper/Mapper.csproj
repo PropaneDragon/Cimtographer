@@ -56,10 +56,13 @@
     <Compile Include="Contours\Conrec.cs" />
     <Compile Include="Curves\CurveFitting.cs" />
     <Compile Include="Curves\Douglas.cs" />
+    <Compile Include="CustomUI\OptionItem.cs" />
+    <Compile Include="Managers\UIOptionsManager.cs" />
     <Compile Include="MapperLoading.cs" />
     <Compile Include="MapperMod.cs" />
     <Compile Include="OSM\osm.cs" />
     <Compile Include="OSM\OSMExport.cs" />
+    <Compile Include="Panels\ExportPanel.cs" />
     <Compile Include="RoadData.cs" />
     <Compile Include="RoadMaker.cs" />
     <Compile Include="OSM\OSMInterface.cs" />

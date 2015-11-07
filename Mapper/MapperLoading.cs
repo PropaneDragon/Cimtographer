@@ -35,7 +35,6 @@ namespace Mapper
             this.buildingWindow.position = new Vector3(300, 122);
             this.buildingWindow.Hide();
 
-
             UITabstrip strip = null;
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
