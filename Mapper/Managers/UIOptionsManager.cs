@@ -5,6 +5,18 @@ namespace Mapper.Managers
 {
     class MapperOptionsManager
     {
+        private static MapperOptionsManager instance_ = null;
+
+        public static MapperOptionsManager Instance()
+        {
+            if(instance_ == null)
+            {
+                instance_ = new MapperOptionsManager();
+            }
+
+            return instance_;
+        }
+
         public Dictionary<string, OptionItem> exportOptions = new Dictionary<string, OptionItem>()
         {
             {"paths", new OptionItem() { readableLabel = "Paths", enabled = true }},
@@ -31,6 +43,5 @@ namespace Mapper.Managers
         {
             {"findTramStations", new OptionItem() { readableLabel = "Automatically find tram lines", enabled = true }}
         };
-        public bool estimateTramStations = true;
     }
 }

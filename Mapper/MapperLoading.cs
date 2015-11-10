@@ -1,81 +1,78 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
-using ColossalFramework.Plugins;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using ICities;
+using Mapper.Panels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Mapper
 {
     public class MapperLoading : LoadingExtensionBase
     {
-        GameObject buildingWindowGameObject;
-        GameObject buttonObject;
-        GameObject buttonObject2;
-        UIButton menuButton;
+        private GameObject exportPanelGameObject;
+        private GameObject buttonObject;
+        private GameObject buttonObject2;
+        private UIButton menuButton;
 
-        MapperWindow7 buildingWindow;
-        private LoadMode _mode;
+        private ExportPanel exportPanel;
+        private LoadMode lastLoadMode_;
 
         public override void OnLevelLoaded(LoadMode mode)
         {
             if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewMap && mode != LoadMode.LoadMap)
                 return;
-            _mode = mode;
 
-            buildingWindowGameObject = new GameObject("buildingWindowObject");
+            lastLoadMode_ = mode;
 
-            var view = UIView.GetAView();
-            this.buildingWindow = buildingWindowGameObject.AddComponent<MapperWindow7>();
-            this.buildingWindow.transform.parent = view.transform;
-            this.buildingWindow.position = new Vector3(300, 122);
-            this.buildingWindow.Hide();
+            UIView view = UIView.GetAView();
+            UITabstrip tabStrip = null;
 
-            UITabstrip strip = null;
+            exportPanelGameObject = new GameObject("exportPanel");
+            this.exportPanel = exportPanelGameObject.AddComponent<ExportPanel>();
+            this.exportPanel.transform.parent = view.transform;
+            this.exportPanel.position = new Vector3(300, 122);
+            this.exportPanel.Hide();
+
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
-                strip =  ToolsModifierControl.mainToolbar.component as UITabstrip;
+                tabStrip =  ToolsModifierControl.mainToolbar.component as UITabstrip;
             }
             else
             {
-                strip = UIView.Find<UITabstrip>("MainToolstrip");
+                tabStrip = UIView.Find<UITabstrip>("MainToolstrip");
             }
 
             buttonObject = UITemplateManager.GetAsGameObject("MainToolbarButtonTemplate");
             buttonObject2 = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-            menuButton = strip.AddTab("mapperMod", buttonObject, buttonObject2, new Type[] { }) as UIButton;
+            menuButton = tabStrip.AddTab("cimtographerMod", buttonObject, buttonObject2, new Type[] { }) as UIButton;
             menuButton.eventClick += uiButton_eventClick;
         }
 
         private void uiButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
         {
 
-            if (!this.buildingWindow.isVisible)
+            if (!this.exportPanel.isVisible)
             {
-                this.buildingWindow.isVisible = true;
-                this.buildingWindow.BringToFront();
-                this.buildingWindow.Show();
+                this.exportPanel.isVisible = true;
+                this.exportPanel.BringToFront();
+                this.exportPanel.FitChildren();
+                this.exportPanel.Show();
             }
             else
             {
-                this.buildingWindow.isVisible = false;
-                this.buildingWindow.Hide();
+                this.exportPanel.isVisible = false;
+                this.exportPanel.Hide();
             }            
         }
 
         public override void OnLevelUnloading()
         {
-            if (_mode != LoadMode.LoadGame && _mode != LoadMode.NewGame && _mode != LoadMode.NewMap && _mode != LoadMode.LoadMap)
+            if (lastLoadMode_ != LoadMode.LoadGame && lastLoadMode_ != LoadMode.NewGame && lastLoadMode_ != LoadMode.NewMap && lastLoadMode_ != LoadMode.LoadMap)
                 return;
 
 
-            if (buildingWindowGameObject != null)
+            if (exportPanelGameObject != null)
             {
-                GameObject.Destroy(buildingWindowGameObject);
+                GameObject.Destroy(exportPanelGameObject);
             }
 
             if (buttonObject != null)

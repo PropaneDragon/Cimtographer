@@ -36,8 +36,8 @@ namespace Mapper.OSM
             var ms = new MemoryStream(response);
             var reader = new StreamReader(ms);
 
-            var serializer = new XmlSerializer(typeof(osm));
-            var osm = (osm)serializer.Deserialize(reader);
+            var serializer = new XmlSerializer(typeof(OSM));
+            var osm = (OSM)serializer.Deserialize(reader);
             ms.Dispose();
             reader.Dispose();
             osm.bounds = bounds;
@@ -53,16 +53,16 @@ namespace Mapper.OSM
             mapping = new RoadMapping(tiles);
             fc = new FitCurves();
 
-            var serializer = new XmlSerializer(typeof(osm));
+            var serializer = new XmlSerializer(typeof(OSM));
             var reader = new StreamReader(path);
 
-            var osm = (osm)serializer.Deserialize(reader);
+            var osm = (OSM)serializer.Deserialize(reader);
             reader.Dispose();
 
             Init(osm, scale);
         }
 
-        private void Init(osm osm,double scale)
+        private void Init(OSM osm,double scale)
         {
             mapping.InitBoundingBox(osm.bounds, scale);
 

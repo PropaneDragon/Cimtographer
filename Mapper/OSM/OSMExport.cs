@@ -16,8 +16,8 @@ namespace Mapper.OSM
         public RoadMapping mapping;
         private int nodeCount;
         private int wayCount;
-        private List<osmNode> nodes;
-        private List<osmWay> ways;
+        private List<OSMNode> nodes;
+        private List<OSMWay> ways;
         private Vector3 middle;
         private float buildingCount;
 
@@ -25,7 +25,7 @@ namespace Mapper.OSM
         {
             Debug.Log("Beginning export");
             mapping = new RoadMapping(4.5);
-            var osm = new osm();
+            var osm = new OSM();
             osm.version = 0.6M;
             osm.meta = new osmMeta { osm_base = DateTime.Now };
             osm.generator = "Cities Skylines Magic Mapper Mod";
@@ -50,7 +50,7 @@ namespace Mapper.OSM
             osm.node = FilterUnusedNodes();
             osm.way = ways.ToArray();
 
-            var serializer = new XmlSerializer(typeof(osm));
+            var serializer = new XmlSerializer(typeof(OSM));
             var ms = new StreamWriter(Singleton<SimulationManager>.instance.m_metaData.m_CityName + ".osm");
             serializer.Serialize(ms, osm);
             ms.Close();
@@ -113,7 +113,7 @@ namespace Mapper.OSM
                 tags.Add(new osmWayTag { k = "natural", v = "water" });
 
                 wayCount += 1;
-                ways.Add(new osmWay { changeset = 50000000, id = (uint)wayCount, timestamp = DateTime.Now, user = "CS", version = 1, nd = nds.ToArray(), tag = tags.ToArray() });
+                ways.Add(new OSMWay { changeset = 50000000, id = (uint)wayCount, timestamp = DateTime.Now, user = "CS", version = 1, nd = nds.ToArray(), tag = tags.ToArray() });
             }
         }
 
@@ -331,7 +331,7 @@ namespace Mapper.OSM
             }
         }
 
-        private osmWay AddBuilding(ushort buildingId, Building data)
+        private OSMWay AddBuilding(ushort buildingId, Building data)
         {
             int width = data.Width;
             int length = data.Length;
@@ -367,7 +367,7 @@ namespace Mapper.OSM
                 ammenityTag.Add("amenity", amenity);
                 AddNode(data.m_position, ammenityTag);
             }
-            return new osmWay { changeset = 50000000, id = (uint)wayCount, timestamp = DateTime.Now, user = "CS", version = 1, nd = nd, tag = tags.ToArray() };
+            return new OSMWay { changeset = 50000000, id = (uint)wayCount, timestamp = DateTime.Now, user = "CS", version = 1, nd = nd, tag = tags.ToArray() };
         }
 
         private void AddCity()
@@ -383,7 +383,7 @@ namespace Mapper.OSM
             tags.Add(new osmNodeTag { k = "place", v = "city" });
             tags.Add(new osmNodeTag { k = "population", v = Singleton<DistrictManager>.instance.m_districts.m_buffer[0].m_populationData.m_finalCount.ToString() });
 
-            nodes.Add(new osmNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
+            nodes.Add(new OSMNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
         }
 
         private void AddDistricts()
@@ -407,11 +407,11 @@ namespace Mapper.OSM
             tags.Add(new osmNodeTag { k = "name", v = name });
             tags.Add(new osmNodeTag { k = "place", v = place });
 
-            nodes.Add(new osmNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
+            nodes.Add(new OSMNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
             nodeCount += 1;
         }
 
-        private osmNode[] FilterUnusedNodes()
+        private OSMNode[] FilterUnusedNodes()
         {
 
             var found = new HashSet<uint>();
@@ -423,7 +423,7 @@ namespace Mapper.OSM
                 }
             }
 
-            var finalNodes = new List<osmNode>();
+            var finalNodes = new List<OSMNode>();
             foreach (var node in nodes)
             {
                 if (node.tag != null || found.Contains(node.id))
@@ -437,7 +437,7 @@ namespace Mapper.OSM
         private void AddNodesAndWays()
         {
             var nm = Singleton<NetManager>.instance;
-            nodes = new List<osmNode>();
+            nodes = new List<OSMNode>();
             for (var i = 0; i < 32768u; i += 1)
             {
                 if ((nm.m_nodes.m_buffer[i].m_flags & NetNode.Flags.Created) != NetNode.Flags.None)
@@ -446,7 +446,7 @@ namespace Mapper.OSM
                 }
             }
 
-            ways = new List<osmWay>();
+            ways = new List<OSMWay>();
             for (var i = 0; i < 32768u; i += 1)
             {
                 if ((nm.m_segments.m_buffer[i].m_flags & NetSegment.Flags.Created) != NetSegment.Flags.None)
@@ -460,13 +460,14 @@ namespace Mapper.OSM
             }
         }
 
-        private osmWay AddWay(int i, NetSegment netSegment)
+        private OSMWay AddWay(int i, NetSegment netSegment)
         {
             var nm = Singleton<NetManager>.instance;
             if (netSegment.m_startNode == 0 || netSegment.m_endNode == 0)
             {
                 return null;
             }
+
             var startNode = netSegment.m_startNode;
             var endNode = netSegment.m_endNode;
             var startDirection = netSegment.m_startDirection;
@@ -479,7 +480,7 @@ namespace Mapper.OSM
                 startDirection = netSegment.m_endDirection;
                 endDirection = netSegment.m_startDirection;
             }
-            osmWayND[] nd;
+            OSMWayND[] nd;
             if (Vector3.Angle(startDirection, -endDirection) > 3f)
             {
                 var start = nm.m_nodes.m_buffer[startNode].m_position;
@@ -515,7 +516,7 @@ namespace Mapper.OSM
             {
                 return null;
             }
-            return new osmWay { changeset = 50000000, id = (uint)i, timestamp = DateTime.Now, user = "CS", version = 1, nd = nd, tag = tags.ToArray() };
+            return new OSMWay { changeset = 50000000, id = (uint)i, timestamp = DateTime.Now, user = "CS", version = 1, nd = nd, tag = tags.ToArray() };
         }
 
         private uint AddNode(Vector3 vector3, Dictionary<string, string> tags = null)
@@ -535,17 +536,17 @@ namespace Mapper.OSM
             return (uint)(nodeCount - 1);
         }
 
-        private osmNode AddNode(int i, NetNode netNode)
+        private OSMNode AddNode(int i, NetNode netNode)
         {
             return AddNode(i, netNode.m_position);
         }
 
-        private osmNode AddNode(int i, Vector3 vector3)
+        private OSMNode AddNode(int i, Vector3 vector3)
         {
             decimal lon = 0;
             decimal lat = 0;
             mapping.GetPos(vector3, out lon, out lat);
-            return new osmNode { changeset = 50000000, id = (uint)i, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, };
+            return new OSMNode { changeset = 50000000, id = (uint)i, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, };
         }
 
         private void AddRoutes()
@@ -584,7 +585,7 @@ namespace Mapper.OSM
                             tags.Add(new osmNodeTag { k = "railway", v = tramLine ? "tram_stop" : "station" });
                         }
 
-                        nodes.Add(new osmNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
+                        nodes.Add(new OSMNode { changeset = 50000000, id = (uint)nodeCount, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
                         nodeCount += 1;
                     }
                 }

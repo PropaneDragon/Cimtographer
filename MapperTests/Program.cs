@@ -49,8 +49,8 @@ namespace MapperTests
             key = new Vector2(4, 2);
             result[0].Add(key, new List<Vector2>());
             result[0][key].Add(new Vector2(1, 3));
-            var chains = Mapper.OSM.OSMExport.Process(result[0]);
-            var a = chains.ToString();
+            //var chains = Mapper.OSM.OSMExport.Process(result[0]);
+            //var a = chains.ToString();
         }
     }
 }
