@@ -29,7 +29,6 @@ namespace Mapper
             exportPanelGameObject = new GameObject("exportPanel");
             this.exportPanel = exportPanelGameObject.AddComponent<ExportPanel>();
             this.exportPanel.transform.parent = view.transform;
-            this.exportPanel.position = new Vector3(300, 122);
             this.exportPanel.Hide();
 
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
@@ -54,7 +53,6 @@ namespace Mapper
             {
                 this.exportPanel.isVisible = true;
                 this.exportPanel.BringToFront();
-                this.exportPanel.FitChildren();
                 this.exportPanel.Show();
             }
             else

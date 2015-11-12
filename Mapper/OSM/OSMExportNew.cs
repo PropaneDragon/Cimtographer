@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
+using Mapper.Contours;
 using Mapper.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Mapper.OSM
 {
     class OSMExportNew
     {
+        private enum ContourType { Water, Ground };
+
         private OSM osm = new OSM();
         private List<OSMNode> osmNodes = new List<OSMNode>();
         private List<OSMWay> osmWays = new List<OSMWay>();
@@ -19,7 +22,7 @@ namespace Mapper.OSM
 
         public OSMExportNew()
         {
-            osm.version = 1M;
+            osm.version = 0.6M;
             osm.meta = new OSMMeta { osm_base = DateTime.Now };
             osm.generator = "Cities Skylines Cimtographer Mod";
             osm.note = Singleton<SimulationManager>.instance.m_metaData.m_CityName;
@@ -41,6 +44,9 @@ namespace Mapper.OSM
 
             Debug.Log("Exporting buildings");
             ExportBuildings();
+
+            Debug.Log("Exporting ground and water");
+            ExportGroundAndWater();
 
             UniqueLogger.PrintLog("Road name matches");
             UniqueLogger.PrintLog("Road names missing from search");
@@ -121,6 +127,63 @@ namespace Mapper.OSM
             }
         }
 
+        private void ExportGroundAndWater()
+        {
+            /* I'll be honest, I tried to make sense of this bit but it went right
+            ** over my head, so I just re-implemented it as it was and fixed it up
+            ** so it took water levels into account, so it's a bit of a mess still.
+            ** Sorry about that. If someone wants to help make it readable then be
+            ** my guest!*/
+            TerrainManager terrainManager = Singleton<TerrainManager>.instance;
+            int gridSize = 16;
+            int steps = (1920 * 9) / gridSize; //??????????
+
+            double[,] waterPoints = new double[steps + 2, steps + 2]; //Why does it add 2? I have no idea
+            double[,] groundPoints = new double[steps + 2, steps + 2];
+            double[] contourX = new double[steps + 2], contourY = new double[steps + 2], contourZ = new double[] { 1.6 };
+
+            for(int y = 0; y < steps + 2; ++y)
+            {
+                for(int x = 0; x < steps + 2; ++x)
+                {
+                    if(y == 0 || y == steps + 1 || x == 0 || x == steps + 1) //*shrug*
+                    {
+                        waterPoints[y, x] = 0.0F; //*more shrug*
+                        groundPoints[y, x] = 0.0F;
+                    }
+                    else
+                    {
+                        Vector3 position = new Vector3(((y - 1) - (steps / 2)) * gridSize, 0, ((x - 1) - (steps / 2)) * gridSize); //What?
+
+                        float waterLevel = terrainManager.SampleRawHeightSmoothWithWater(position, false, 0f);
+                        float groundLevel = terrainManager.SampleRawHeightSmooth(position);
+                        float difference = waterLevel - groundLevel;
+
+                        UniqueLogger.AddLog("Levels", Math.Round(waterLevel).ToString() + " - " + Math.Round(groundLevel).ToString(), "");
+
+                        if (difference < 1.6F)
+                        {
+                            waterPoints[y, x] = 0.0F;
+                            groundPoints[y, x] = groundLevel;
+                        }
+                        else
+                        {
+                            waterPoints[y, x] = (double)difference;
+                            groundPoints[y, x] = 0.0F;
+                        }
+                    }
+                }
+
+                contourX[y] = y * gridSize;
+                contourY[y] = y * gridSize; //Still no idea...
+            }
+
+            UniqueLogger.PrintLog("Levels");
+
+            CreateContours(waterPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Water);
+            CreateContours(groundPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Ground);
+        }
+
         private OSMNode CreateNode(int index, Vector3 position)
         {
             OSMNode returnNode = null;
@@ -181,7 +244,7 @@ namespace Mapper.OSM
 
                 if(Tagger.CreateWayTags(segment, out wayTags))
                 {
-                    returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = wayPaths.ToArray(), tag = wayTags.ToArray() };
+                    returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = wayPaths.ToArray(), tag = wayTags.ToArray(), version = 1 };
                 }
                 else
                 {
@@ -219,10 +282,54 @@ namespace Mapper.OSM
                 buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 1 });
                 buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 4 });
 
-                returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = buildingPaths.ToArray(), tag = buildingTags.ToArray() };
+                returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = buildingPaths.ToArray(), tag = buildingTags.ToArray(), version = 1 };
             }
 
             return returnWay;
+        }
+
+        private void CreateContours(double[,] points, double[] contourX, double[] contourY, double[] contourZ, int gridSize, int steps, ContourType contourType)
+        {
+            Dictionary<Vector2, List<Vector2>>[] contours = new Dictionary<Vector2, List<Vector2>>[contourZ.Length];
+
+            for (int heightCount = 0; heightCount < contourZ.Length; ++heightCount) //Loop through the different Z height segments
+            {
+                contours[heightCount] = new Dictionary<Vector2, List<Vector2>>();
+            }
+
+            Conrec.Contour(points, contourX, contourY, contourZ, contours); //Get contours for the points. Returns an array of contours for the different heights.
+
+            foreach (Dictionary<Vector2, List<Vector2>> contourList in contours)
+            {
+                List<List<Vector2>> contourChains = Chains.Process(contourList);
+                contourChains = Chains.Simplify(contourChains);
+
+                foreach (List<Vector2> chains in contourChains)
+                {
+                    List<OSMWayND> wayPaths = new List<OSMWayND>();
+                    List<OSMWayTag> wayTags = new List<OSMWayTag>();
+
+                    foreach (Vector2 node in chains)
+                    {
+                        osmNodes.Add(CreateNode(unindexedNodeOffset++, new Vector3((node.x - gridSize) - ((steps * gridSize) / 2), 0, (node.y - gridSize) - ((steps * gridSize) / 2))));
+                        wayPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 1 });
+                    }
+
+                    wayPaths.Add(new OSMWayND { @ref = (uint)(unindexedNodeOffset - chains.Count) }); //Back to the first chain
+
+                    switch(contourType)
+                    {
+                        case ContourType.Ground:
+                            wayTags.Add(new OSMWayTag { k = "natural", v = "coastline" });
+                            break;
+                        case ContourType.Water:
+                            wayTags.Add(new OSMWayTag { k = "natural", v = "water" });
+                        break;
+                    }
+
+                    osmWays.Add(new OSMWay { changeset = 50000000, id = (uint)unindexedWayOffset++, timestamp = DateTime.Now, user = "Cimtographer", nd = wayPaths.ToArray(), tag = wayTags.ToArray(), version = 1 });
+                }
+            }
         }
     }
 }
