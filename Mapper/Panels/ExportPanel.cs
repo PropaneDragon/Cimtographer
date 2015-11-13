@@ -3,15 +3,14 @@ using UnityEngine;
 using Mapper.Managers;
 using System.Collections.Generic;
 using Mapper.CustomUI;
-using System;
-using ICities;
 using Mapper.OSM;
 
 namespace Mapper.Panels
 {
     class ExportPanel : UIPanel
     {
-        private UIHelper mainHelper;
+        int titleOffset = 40;
+        Vector2 offset = Vector2.zero;
 
         public override void Awake()
         {
@@ -20,111 +19,122 @@ namespace Mapper.Panels
             this.width = 400;
             this.height = 500;
 
-            mainHelper = new UIHelper(this);
-
             base.Awake();
         }
 
         public override void Start()
         {
             base.Start();
-
+            
             UILabel labelTitle = this.AddUIComponent<UILabel>();
             labelTitle.text = "Cimtographer";
             labelTitle.textScale = 1.3f;
             labelTitle.autoSize = true;
             labelTitle.relativePosition = new Vector3(4, 4);
 
-            CreateOptions();
+            CreateLeftPanel();
             CreateRightPanel();
+            CreateBottomMessage();
 
-            this.relativePosition = new Vector3(20, 20);
-            this.backgroundSprite = "MenuPanel2";
-
-            //this.PerformLayout();
-
-            this.backgroundSprite = "MenuPanel2";
+            this.relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
+            this.backgroundSprite = "UnlockingPanel2";
+            this.atlas = CustomUI.UIUtils.GetAtlas("Ingame");
         }
 
-        private void ButtonGenerate_eventClick()
+        private void CreateLeftPanel()
+        {
+            offset = new Vector2(4, titleOffset);
+
+            CreateOptions();
+        }
+
+        private void CreateBottomMessage()
+        {
+            UISprite infoSprite = this.AddUIComponent<UISprite>();
+            infoSprite.spriteName = "IconMessage";
+            infoSprite.size = new Vector2(32, 32);
+            infoSprite.relativePosition = new Vector3(4, height - 40);
+
+            UILabel label = this.AddUIComponent<UILabel>();
+            label.text = "Hey, remember post your maps to http://reddit.com/r/cimtographer, and show us what you've made!";
+            label.textScale = 0.6f;
+            label.size = new Vector2(600, 40);
+            label.width = 600;
+            label.relativePosition = new Vector2(40, height - 40);
+        }
+
+        private void CreateRightPanel()
+        {
+            offset = new Vector2(width / 2, titleOffset);
+
+            CreateInfoMessage();
+
+            UIButton buttonGenerate = CustomUI.UIUtils.CreateButton(this);
+            buttonGenerate.eventClicked += ButtonGenerate_eventClicked;
+            buttonGenerate.textPadding = new RectOffset(6, 6, 6, 6);
+            buttonGenerate.autoSize = true;
+            buttonGenerate.relativePosition = offset;
+            buttonGenerate.text = "Generate OSM map";
+        }
+
+        private void CreateInfoMessage()
+        {
+            UISprite betaSprite = this.AddUIComponent<UISprite>();
+            betaSprite.spriteName = "IconMessage";
+            betaSprite.size = new Vector2(32, 32);
+            betaSprite.relativePosition = offset;
+
+            UILabel labelTitle = this.AddUIComponent<UILabel>();
+            labelTitle.text = "Oooo, shiny! Cimtographer's had a rewrite.";
+            labelTitle.textScale = 0.6f;
+            labelTitle.size = new Vector2(180, 40);
+            labelTitle.relativePosition = offset + new Vector2(42, 14);
+
+            offset += new Vector2(0, 70);
+        }
+
+        private void CreateOptions()
+        {
+            CreateOptionList(MapperOptionsManager.Instance().exportOptions);
+        }
+
+        private void CreateOptionList(Dictionary<string, OptionItem> options)
+        {
+            foreach (KeyValuePair<string, OptionItem> option in options)
+            {
+                UICheckBox checkboxOption = CustomUI.UIUtils.CreateCheckBox(this);
+                checkboxOption.eventCheckChanged += CheckboxOption_eventCheckChanged;
+                checkboxOption.name = option.Key;
+                checkboxOption.text = option.Value.readableLabel;
+                checkboxOption.label.text = option.Value.readableLabel;
+                checkboxOption.isChecked = option.Value.enabled;
+
+                checkboxOption.width = 200;
+                checkboxOption.height = 40;
+                checkboxOption.relativePosition = offset;
+
+                offset += new Vector2(0, 20);
+            }
+        }
+
+        private void ButtonGenerate_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
             OSMExportNew osmExporter = new OSMExportNew();
             osmExporter.Export();
         }
 
-        private void CreateOptions()
+        private void CheckboxOption_eventCheckChanged(UIComponent component, bool value)
         {
-            UIHelper exportWhatGroupHelper = mainHelper.AddGroup("Choose items to export") as UIHelper;
-            UIPanel exportWhatGroupPanel = exportWhatGroupHelper.self as UIPanel;
+            UICheckBox checkbox = component as UICheckBox;
 
-            exportWhatGroupPanel.relativePosition = new Vector3(200, 800);
-            exportWhatGroupPanel.autoLayout = true;
-            exportWhatGroupPanel.wrapLayout = false;
-            exportWhatGroupPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            exportWhatGroupPanel.padding = new RectOffset(5, 5, 2, 2);
-            exportWhatGroupPanel.verticalSpacing = 2;
-            exportWhatGroupPanel.maximumSize = new Vector2(100, 400);
-            exportWhatGroupPanel.size = exportWhatGroupPanel.maximumSize;
-
-            CreateOptionList(exportWhatGroupPanel, MapperOptionsManager.Instance().exportOptions);
-        }
-
-        private void CreateRightPanel()
-        {
-            UIHelper rightPanelGroupHelper = mainHelper.AddGroup("blah") as UIHelper;
-            UIPanel rightPanel = rightPanelGroupHelper.self as UIPanel;
-
-            rightPanel.relativePosition = new Vector3(400, 800);
-            rightPanel.autoLayout = true;
-            rightPanel.wrapLayout = false;
-            rightPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            rightPanel.maximumSize = new Vector2(100, 400);
-            rightPanel.size = rightPanel.maximumSize;
-
-            CreateInfoMessage(rightPanel);
-
-            UIButton buttonGenerate = rightPanelGroupHelper.AddButton("Export OSM map", ButtonGenerate_eventClick) as UIButton;
-        }
-
-        private void CreateInfoMessage(UIPanel parent)
-        {
-            UIPanel messagePanel = parent.AddUIComponent<UIPanel>();
-            messagePanel.autoSize = true;
-            messagePanel.autoLayout = true;
-            messagePanel.autoLayoutDirection = LayoutDirection.Horizontal;
-
-            UISprite betaSprite = messagePanel.AddUIComponent<UISprite>();
-            betaSprite.spriteName = "IconMessage";
-            betaSprite.size = new Vector2(64, 64);
-
-            UILabel labelTitle = this.AddUIComponent<UILabel>();
-            labelTitle.text = "Whoa! What's this?!";
-            labelTitle.textScale = 1f;
-            labelTitle.autoSize = true;
-
-            //messagePanel.FitChildren();
-        }
-
-        private void CreateOptionList(UIComponent parent, Dictionary<string, OptionItem> options)
-        {
-            UIHelper parentUIHelper = new UIHelper(parent);
-
-            foreach (KeyValuePair<string, OptionItem> option in options)
+            if (MapperOptionsManager.Instance().exportOptions.ContainsKey(checkbox.name))
             {
-                UICheckBox checkboxOption = parentUIHelper.AddCheckbox(option.Value.readableLabel, option.Value.enabled, (bool isChecked) => 
-                {
-                    if (MapperOptionsManager.Instance().exportOptions.ContainsKey(option.Key))
-                    {
-                        MapperOptionsManager.Instance().exportOptions[option.Key].enabled = isChecked;
-                        Debug.Log("Set \"" + option.Key + "\" to " + option.Value.enabled.ToString());
-                    }
-                    else
-                    {
-                        Debug.LogError("Could not find option \"" + option.Key + "\".");
-                    }
-                }) as UICheckBox;
-
-                checkboxOption.autoSize = true;
+                MapperOptionsManager.Instance().exportOptions[checkbox.name].enabled = value;
+                Debug.Log("Set \"" + checkbox.name + "\" to " + value.ToString());
+            }
+            else
+            {
+                Debug.LogError("Could not find option \"" + checkbox.name + "\".");
             }
         }
     }

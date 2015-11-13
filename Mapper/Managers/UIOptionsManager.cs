@@ -25,7 +25,7 @@ namespace Mapper.Managers
             {"buildingNames", new OptionItem() { readableLabel = "Building names", enabled = true }},
             {"buildingTypes", new OptionItem() { readableLabel = "Service buildings", enabled = true }},
             {"water", new OptionItem() { readableLabel = "Water", enabled = true }},
-            {"subwayTrack", new OptionItem() { readableLabel = "Subway track", enabled = true }},
+            {"subwayTrack", new OptionItem() { readableLabel = "Subway track", enabled = false }},
             {"busStops", new OptionItem() { readableLabel = "Bus stops", enabled = true }},
             {"busStations", new OptionItem() { readableLabel = "Bus stations", enabled = true }},
             {"trainStops", new OptionItem() { readableLabel = "Train stations", enabled = true }},

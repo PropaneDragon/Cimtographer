@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework;
+using ColossalFramework.UI;
 using ICities;
 using Mapper.Panels;
 using System;
@@ -16,8 +17,23 @@ namespace Mapper
         private ExportPanel exportPanel;
         private LoadMode lastLoadMode_;
 
+        public override void OnCreated(ILoading loading)
+        {
+            Debug.Log("Intro created.");
+            UIView view = UIView.GetAView();
+
+            exportPanelGameObject = new GameObject("exportPanel");
+            this.exportPanel = exportPanelGameObject.AddComponent<ExportPanel>();
+            this.exportPanel.transform.parent = view.transform;
+            this.exportPanel.isVisible = true;
+            this.exportPanel.BringToFront();
+            this.exportPanel.Show();
+        }
+
         public override void OnLevelLoaded(LoadMode mode)
         {
+            Debug.Log("Level loaded.");
+
             if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewMap && mode != LoadMode.LoadMap)
                 return;
 
