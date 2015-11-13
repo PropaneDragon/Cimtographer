@@ -48,6 +48,9 @@ namespace Mapper.OSM
             Debug.Log("Exporting ground and water");
             ExportGroundAndWater();
 
+            Debug.Log("Exporting routes");
+            ExportRoutes();
+
             UniqueLogger.PrintLog("Road name matches");
             UniqueLogger.PrintLog("Road names missing from search");
 
@@ -161,10 +164,10 @@ namespace Mapper.OSM
 
                         UniqueLogger.AddLog("Levels", Math.Round(waterLevel).ToString() + " - " + Math.Round(groundLevel).ToString(), "");
 
-                        if (difference < 1.6F)
+                        if (difference < 5.0F)
                         {
-                            waterPoints[y, x] = 0.0F;
-                            groundPoints[y, x] = groundLevel;
+                            waterPoints[y, x] = difference;
+                            groundPoints[y, x] = groundLevel / 9;
                         }
                         else
                         {
@@ -182,6 +185,27 @@ namespace Mapper.OSM
 
             CreateContours(waterPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Water);
             CreateContours(groundPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Ground);
+        }
+
+        private void ExportRoutes()
+        {
+            TransportManager transportManager = Singleton<TransportManager>.instance;
+            TransportLine[] transportLines = transportManager.m_lines.m_buffer;
+
+            foreach (TransportLine line in transportLines)
+            {
+                TransportLine.Flags lineFlags = line.m_flags;
+
+                if (lineFlags.IsFlagSet(TransportLine.Flags.Created))
+                {
+                    List<OSMNode> generatedLines = CreateTransportLine(unindexedNodeOffset++, line);
+
+                    if (generatedLines != null)
+                    {
+                        osmNodes.AddRange(generatedLines);
+                    }
+                }
+            }
         }
 
         private OSMNode CreateNode(int index, Vector3 position)
@@ -330,6 +354,47 @@ namespace Mapper.OSM
                     osmWays.Add(new OSMWay { changeset = 50000000, id = (uint)unindexedWayOffset++, timestamp = DateTime.Now, user = "Cimtographer", nd = wayPaths.ToArray(), tag = wayTags.ToArray(), version = 1 });
                 }
             }
+        }
+
+        private List<OSMNode> CreateTransportLine(int index, TransportLine line)
+        {
+            List<OSMNode> returnNodes = new List<OSMNode>();
+            TransportManager transportManager = Singleton<TransportManager>.instance;
+
+            int numberOfStops = line.CountStops(line.m_stops);
+            var transportType = line.Info.m_transportType;
+
+            if (line.m_stops != 0 && numberOfStops > 0)
+            {
+                for (int stopIndex = 0; stopIndex < numberOfStops; ++stopIndex)
+                {
+                    ushort stopId = line.GetStop(stopIndex);
+                    NetNode stop = Singleton<NetManager>.instance.m_nodes.m_buffer[(int)stopId];
+                    Vector3 position = stop.m_position;
+                    ushort transportLine = stop.m_transportLine;
+                    string transportLineName = transportLineName = transportManager.GetLineName(transportLine); ;
+                    decimal lon, lat;
+
+                    Translations.VectorToLonLat(position, out lon, out lat);
+
+                    var tags = new List<OSMNodeTag>();
+
+                    if (transportType == TransportInfo.TransportType.Bus)
+                    {
+                        tags.Add(new OSMNodeTag { k = "highway", v = "bus_stop" });
+                    }
+                    else if (transportType == TransportInfo.TransportType.Train)
+                    {
+                        bool tramLine = transportLineName != null && (transportLineName.Contains("[t]") || transportLineName.ToLower().Contains("tram"));
+                        tags.Add(new OSMNodeTag { k = "public_transport", v = "platform" });
+                        tags.Add(new OSMNodeTag { k = "railway", v = tramLine ? "tram_stop" : "station" });
+                    }
+
+                    returnNodes.Add(new OSMNode { changeset = 50000000, id = (uint)unindexedNodeOffset++, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });
+                }
+            }
+
+            return returnNodes;
         }
     }
 }

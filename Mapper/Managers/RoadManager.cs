@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Mapper.Managers
 {
-    static class RoadManager
+    public static class RoadManager
     {
         private static List<RoadContainer> allRoadTypes = new List<RoadContainer>();
 
@@ -76,6 +76,14 @@ namespace Mapper.Managers
             {
                 new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
             } },
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
+            } },
+            new RoadContainer() { inGameNamePrefix = "Pedestrian", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
+            } },
             new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Pavement", roadType = RoadContainer.Type.Path, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
@@ -86,15 +94,15 @@ namespace Mapper.Managers
             } },
 
             //Gravel paths
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Gravel", roadType = RoadContainer.Type.Path, tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
+            } },
             new RoadContainer() { inGameNamePrefix = "Gravel Road", roadType = RoadContainer.Type.Road, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "track" }
             } },
             new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Gravel", roadType = RoadContainer.Type.Road, tags =
-            {
-                new OSM.OSMWayTag() { k = "highway", v = "track" }
-            } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian Gravel", roadType = RoadContainer.Type.Road, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "track" }
             } },
@@ -260,8 +268,8 @@ namespace Mapper.Managers
                 foreach(RoadContainer road in roads)
                 {
                     List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
-
-                    allRoadTypes.Add(road);
+                    
+                    //allRoadTypes.Add(road);
                     allRoadTypes.AddRange(roadPlusElevations);
                     allRoadTypes.AddRange(AddRoadExtensions(road, roadDecorations));
                     allRoadTypes.AddRange(AddRoadExtensions(road, roadLanes));
@@ -283,7 +291,7 @@ namespace Mapper.Managers
         /// <param name="baseRoad">The initial road to add extension names to</param>
         /// <param name="roadExtensions">A list of strings containing possible road name extensions</param>
         /// <returns>A list of new roads plus all extensions in the name</returns>
-        private static List<RoadContainer> AddRoadExtensions(RoadContainer baseRoad, List<KeyValuePair<string, RoadContainer.Limit>> roadExtensions)
+        public static List<RoadContainer> AddRoadExtensions(RoadContainer baseRoad, List<KeyValuePair<string, RoadContainer.Limit>> roadExtensions)
         {
             List<RoadContainer> returnRoads = new List<RoadContainer>();
 
@@ -291,7 +299,7 @@ namespace Mapper.Managers
             {
                 if(baseRoad.searchLimit == RoadContainer.Limit.None || (baseRoad.searchLimit & roadExtension.Value) != RoadContainer.Limit.None)
                 {
-                    RoadContainer modifiedRoad = new RoadContainer { inGameNamePrefix = baseRoad.inGameNamePrefix + " " + roadExtension.Key, roadType = baseRoad.roadType, tags = baseRoad.tags };
+                    RoadContainer modifiedRoad = new RoadContainer { inGameNamePrefix = baseRoad.inGameNamePrefix + " " + roadExtension.Key, roadType = baseRoad.roadType, inGameNamePostfix = baseRoad.inGameNamePostfix, searchLimit = baseRoad.searchLimit, tags = baseRoad.tags };
                     returnRoads.Add(modifiedRoad);
                 }
             }

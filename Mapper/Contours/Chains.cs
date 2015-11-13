@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Mapper.Contours
 {
-    class Chains
+    public class Chains
     {
         /*All this stuff is completely unmodified, because it works, and I didn't really want
         to mess with it*/

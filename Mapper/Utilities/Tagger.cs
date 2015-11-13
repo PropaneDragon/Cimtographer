@@ -3,6 +3,7 @@ using Mapper.Containers;
 using Mapper.Managers;
 using Mapper.OSM;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Mapper.Utilities
@@ -71,50 +72,57 @@ namespace Mapper.Utilities
             ItemClass.SubService buildingSubService = building.Info.m_class.m_subService;
 
             string buildingClassName = building.Info.m_class.name.ToLower().Replace(" ", "");
+            string buildingIngameName = cleanUpName(building.Info.name);
 
             foreach (BuildingContainer buildingContainer in Managers.BuildingManager.buildings)
             {
                 List<OSMWayTag> containerTags = new List<OSMWayTag>();
-
-                string buildingContainerClassName = buildingContainer.buildingClassName.ToLower().Replace(" ", "");
                 bool validComparisons = true;
 
-                if (buildingContainerClassName != "")
+                foreach (ItemInversionContainer<string> buildingContainerClassName in buildingContainer.buildingClassNames)
                 {
-                    if(buildingContainerClassName != buildingClassName)
-                    {
-                        validComparisons = false;
-                    }
-                    else
+                    string lowerClassName = buildingContainerClassName.storedItem_.ToLower().Replace(" ", "");
+
+                    if ((buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.None) ||
+                        (!buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.Inverted))
                     {
                         containerTags.AddRange(buildingContainer.tags);
                     }
-                }
-
-                if(buildingContainer.buildingService != ItemClass.Service.None)
-                {
-                    if (buildingContainer.buildingService != buildingService)
+                    else
                     {
                         validComparisons = false;
                     }
-                    else
+                }
+
+                foreach (ItemInversionContainer<ItemClass.Service> buildingContainerService in buildingContainer.buildingServices)
+                {
+                    if (buildingContainerService.storedItem_ == buildingService && buildingContainerService.validation_ == ItemInversionContainer<ItemClass.Service>.ValidationType.None)
                     {
                         containerTags.Clear();
                         containerTags.AddRange(buildingContainer.tags);
                     }
-                }
-
-                if(buildingContainer.buildingSubService != ItemClass.SubService.None)
-                {
-                    if (buildingContainer.buildingSubService != buildingSubService)
+                    else
                     {
                         validComparisons = false;
                     }
-                    else
+                }
+
+                foreach(ItemInversionContainer<ItemClass.SubService> buildingContainerSubService in buildingContainer.buildingSubServices)
+                {
+                    if (buildingContainerSubService.storedItem_ == buildingSubService && buildingContainerSubService.validation_ == ItemInversionContainer<ItemClass.SubService>.ValidationType.None)
                     {
                         containerTags.Clear();
                         containerTags.AddRange(buildingContainer.tags);
                     }
+                    else
+                    {
+                        validComparisons = false;
+                    }
+                }
+
+                if(buildingContainer.useName)
+                {
+                    containerTags.Add(new OSMWayTag() { k = "name", v = buildingIngameName });
                 }
 
                 if(validComparisons)
@@ -127,6 +135,17 @@ namespace Mapper.Utilities
             }
 
             return buildingTags.Count > 0;
+        }
+
+        private static string cleanUpName(string name)
+        {
+            Regex removeSteamworksData = new Regex("(?:[0-9]*\\.)(.*)(?:_Data.*)");
+            Regex addSpacingOnUppercase = new Regex("(.+?)([A-Z])");
+
+            name = removeSteamworksData.Replace(name, "$1");
+            name = addSpacingOnUppercase.Replace(name, "$1 $2");
+
+            return name;
         }
     }
 }

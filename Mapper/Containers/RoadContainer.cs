@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Mapper.Containers
 {
-    class RoadContainer
+    public class RoadContainer
     {
         /// <summary>
         /// Road types. Used for filtering.
@@ -14,14 +14,14 @@ namespace Mapper.Containers
         public enum Type : byte
         {
             Unknown = 0,
-            Path = 1,
-            Cycleway = 2,
-            Road = 4,
-            Highway = 8,
-            Train = 16,
-            Subway = 32,
-            Runway = 64,
-            Busway = 128
+            Path = 1 << 0,
+            Cycleway = 1 << 1,
+            Road = 1 << 2,
+            Highway = 1 << 3,
+            Train = 1 << 4,
+            Subway = 1 << 5,
+            Runway = 1 << 6,
+            Busway = 1 << 7
         };
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace Mapper.Containers
         public enum Limit : byte
         {
             None = 0,
-            Tunnel = 1,
-            Slope = 2,
-            Ground = 4,
-            Elevated = 8,
-            Bridge = 16,
-            Bicycle = 32,
-            Bus = 64,
-            Decoration = 128,
+            Tunnel = 1 << 0,
+            Slope = 1 << 1,
+            Ground = 1 << 2,
+            Elevated = 1 << 3,
+            Bridge = 1 << 4,
+            Bicycle = 1 << 5,
+            Bus = 1 << 6,
+            Decoration = 1 << 7,
             ElevationsOnly = Tunnel | Slope | Ground | Elevated | Bridge
         };
 
@@ -82,7 +82,7 @@ namespace Mapper.Containers
             string roadNameCompare = prefixCompare + postfixCompare;
             comparisonName = comparisonName.ToLower().Replace(" ", "");
 
-            UniqueLogger.AddLog("Road name matches", inGameNamePrefix, "");
+            UniqueLogger.AddLog("Road name matches", inGameNamePrefix + " " + inGameNamePostfix, "");
 
             return roadNameCompare == comparisonName;
         }
