@@ -56,7 +56,7 @@ namespace Mapper.Panels
             infoSprite.relativePosition = new Vector3(4, height - 40);
 
             UILabel label = this.AddUIComponent<UILabel>();
-            label.text = "Hey, remember post your maps to http://reddit.com/r/cimtographer, and show us what you've made!";
+            label.text = "Remember to post your maps to http://reddit.com/r/cimtographer,\nand show us what you've made!";
             label.textScale = 0.6f;
             label.size = new Vector2(600, 40);
             label.width = 600;
@@ -85,10 +85,10 @@ namespace Mapper.Panels
             betaSprite.relativePosition = offset;
 
             UILabel labelTitle = this.AddUIComponent<UILabel>();
-            labelTitle.text = "Oooo, shiny! Cimtographer's had a rewrite.";
+            labelTitle.text = "Oooo, shiny! Cimtographer's \nhad a rewrite. Check out\nwhat's changed on the\nworkshop page.";
             labelTitle.textScale = 0.6f;
             labelTitle.size = new Vector2(180, 40);
-            labelTitle.relativePosition = offset + new Vector2(42, 14);
+            labelTitle.relativePosition = offset + new Vector2(42, 2);
 
             offset += new Vector2(0, 70);
         }
