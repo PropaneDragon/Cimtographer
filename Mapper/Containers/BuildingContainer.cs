@@ -21,6 +21,12 @@ namespace Mapper.Containers
         public List<ItemInversionContainer<string>> buildingClassNames = new List<ItemInversionContainer<string>>();
 
         /// <summary>
+        /// Option this building is linked to. If the option is
+        /// false, the building is not exported.
+        /// </summary>
+        public string linkedOption = "";
+
+        /// <summary>
         /// All OSM tags this building is associated with.
         /// </summary>
         public List<OSMWayTag> tags = new List<OSMWayTag>();

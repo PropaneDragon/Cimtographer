@@ -48,13 +48,13 @@ namespace Mapper.Utilities
             byte wayElevation = (byte)(Mathf.Clamp((startNode.m_elevation + endNode.m_elevation) / 2, 0, 255));
             bool wayUnderground = startNode.m_flags.IsFlagSet(NetNode.Flags.Underground) || endNode.m_flags.IsFlagSet(NetNode.Flags.Underground);
 
-            if (wayUnderground)
+            if (wayUnderground && MapperOptionsManager.Instance().OptionChecked("tunnels", MapperOptionsManager.Instance().exportOptions))
             {
                 returnList.Add(new OSMWayTag { k = "tunnel", v = "yes" });
                 returnList.Add(new OSMWayTag { k = "level", v = (-Mathf.FloorToInt(wayElevation / 12)).ToString() });
                 returnList.Add(new OSMWayTag { k = "layer", v = (-Mathf.FloorToInt(wayElevation / 12)).ToString() });
             }
-            else if (wayElevation != 0)
+            else if (wayElevation != 0 && MapperOptionsManager.Instance().OptionChecked("bridges", MapperOptionsManager.Instance().exportOptions))
             {
                 returnList.Add(new OSMWayTag { k = "bridge", v = "yes" });
                 returnList.Add(new OSMWayTag { k = "level", v = Mathf.FloorToInt(wayElevation / 12).ToString() });
@@ -76,60 +76,63 @@ namespace Mapper.Utilities
 
             foreach (BuildingContainer buildingContainer in Managers.BuildingManager.buildings)
             {
-                List<OSMWayTag> containerTags = new List<OSMWayTag>();
-                bool validComparisons = true;
-
-                foreach (ItemInversionContainer<string> buildingContainerClassName in buildingContainer.buildingClassNames)
+                if (buildingContainer.linkedOption == "" || MapperOptionsManager.Instance().OptionChecked(buildingContainer.linkedOption, MapperOptionsManager.Instance().exportOptions))
                 {
-                    string lowerClassName = buildingContainerClassName.storedItem_.ToLower().Replace(" ", "");
+                    List<OSMWayTag> containerTags = new List<OSMWayTag>();
+                    bool validComparisons = true;
 
-                    if ((buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.None) ||
-                        (!buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.Inverted))
+                    foreach (ItemInversionContainer<string> buildingContainerClassName in buildingContainer.buildingClassNames)
                     {
-                        containerTags.AddRange(buildingContainer.tags);
-                    }
-                    else
-                    {
-                        validComparisons = false;
-                    }
-                }
+                        string lowerClassName = buildingContainerClassName.storedItem_.ToLower().Replace(" ", "");
 
-                foreach (ItemInversionContainer<ItemClass.Service> buildingContainerService in buildingContainer.buildingServices)
-                {
-                    if (buildingContainerService.storedItem_ == buildingService && buildingContainerService.validation_ == ItemInversionContainer<ItemClass.Service>.ValidationType.None)
-                    {
-                        containerTags.Clear();
-                        containerTags.AddRange(buildingContainer.tags);
+                        if ((buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.None) ||
+                            (!buildingClassName.Contains(lowerClassName) && buildingContainerClassName.validation_ == ItemInversionContainer<string>.ValidationType.Inverted))
+                        {
+                            containerTags.AddRange(buildingContainer.tags);
+                        }
+                        else
+                        {
+                            validComparisons = false;
+                        }
                     }
-                    else
-                    {
-                        validComparisons = false;
-                    }
-                }
 
-                foreach(ItemInversionContainer<ItemClass.SubService> buildingContainerSubService in buildingContainer.buildingSubServices)
-                {
-                    if (buildingContainerSubService.storedItem_ == buildingSubService && buildingContainerSubService.validation_ == ItemInversionContainer<ItemClass.SubService>.ValidationType.None)
+                    foreach (ItemInversionContainer<ItemClass.Service> buildingContainerService in buildingContainer.buildingServices)
                     {
-                        containerTags.Clear();
-                        containerTags.AddRange(buildingContainer.tags);
+                        if (buildingContainerService.storedItem_ == buildingService && buildingContainerService.validation_ == ItemInversionContainer<ItemClass.Service>.ValidationType.None)
+                        {
+                            containerTags.Clear();
+                            containerTags.AddRange(buildingContainer.tags);
+                        }
+                        else
+                        {
+                            validComparisons = false;
+                        }
                     }
-                    else
+
+                    foreach (ItemInversionContainer<ItemClass.SubService> buildingContainerSubService in buildingContainer.buildingSubServices)
                     {
-                        validComparisons = false;
+                        if (buildingContainerSubService.storedItem_ == buildingSubService && buildingContainerSubService.validation_ == ItemInversionContainer<ItemClass.SubService>.ValidationType.None)
+                        {
+                            containerTags.Clear();
+                            containerTags.AddRange(buildingContainer.tags);
+                        }
+                        else
+                        {
+                            validComparisons = false;
+                        }
                     }
-                }
 
-                if(buildingContainer.useName)
-                {
-                    containerTags.Add(new OSMWayTag() { k = "name", v = buildingIngameName });
-                }
-
-                if(validComparisons)
-                {
-                    if (containerTags.Count > 0)
+                    if (buildingContainer.useName && MapperOptionsManager.Instance().OptionChecked("buildingNames", MapperOptionsManager.Instance().exportOptions))
                     {
-                        buildingTags = containerTags;
+                        containerTags.Add(new OSMWayTag() { k = "name", v = buildingIngameName });
+                    }
+
+                    if (validComparisons)
+                    {
+                        if (containerTags.Count > 0)
+                        {
+                            buildingTags = containerTags;
+                        }
                     }
                 }
             }

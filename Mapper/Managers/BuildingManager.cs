@@ -12,6 +12,7 @@ namespace Mapper.Managers
         {
             new BuildingContainer()
             {
+                linkedOption = "parks",
                 buildingClassNames =
                 {
                     new ItemInversionContainer<string>("Beautification Item")
@@ -26,6 +27,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "parks",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Beautification)
@@ -44,6 +46,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "buildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Commercial)
@@ -57,6 +60,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "buildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Residential)
@@ -70,6 +74,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "buildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Office)
@@ -83,6 +88,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "buildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Industrial)
@@ -96,6 +102,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "serviceBuildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Garbage)
@@ -109,6 +116,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "serviceBuildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Education)
@@ -123,6 +131,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "power",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Electricity)
@@ -136,6 +145,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "serviceBuildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.FireDepartment)
@@ -150,6 +160,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "serviceBuildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.HealthCare)
@@ -164,6 +175,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "parks",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Monument)
@@ -178,6 +190,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "serviceBuildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PoliceDepartment)
@@ -192,6 +205,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "busStations",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -211,6 +225,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "trainStops",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -230,6 +245,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "taxis",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -248,6 +264,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "airports",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -266,6 +283,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "subwayStations",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -284,6 +302,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "ferry",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.PublicTransport)
@@ -302,6 +321,7 @@ namespace Mapper.Managers
 
             new BuildingContainer()
             {
+                linkedOption = "buildings",
                 buildingServices =
                 {
                     new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Tourism)
@@ -309,7 +329,8 @@ namespace Mapper.Managers
 
                 tags =
                 {
-                    new OSM.OSMWayTag() { k = "amenity", v = "ferry_terminal" }
+                    new OSM.OSMWayTag() { k = "tourism", v = "attraction" },
+                    new OSM.OSMWayTag() { k = "building", v = "yes" }
                 }
             }
         };

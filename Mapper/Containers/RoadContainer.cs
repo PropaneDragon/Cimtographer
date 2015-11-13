@@ -70,6 +70,12 @@ namespace Mapper.Containers
         public Limit searchLimit = Limit.None;
 
         /// <summary>
+        /// Option this road is linked to. If the option is
+        /// false, the road is not exported.
+        /// </summary>
+        public string linkedOption = "";
+
+        /// <summary>
         /// Checks whether the name of the road matches
         /// the input name.
         /// </summary>

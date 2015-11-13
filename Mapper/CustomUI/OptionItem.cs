@@ -2,7 +2,8 @@
 {
     class OptionItem
     {
-        public bool enabled;
-        public string readableLabel;
+        public bool value = false;
+        public bool enabled = true;
+        public string readableLabel = "";
     }
 }

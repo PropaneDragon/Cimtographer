@@ -13,212 +13,212 @@ namespace Mapper.Managers
         public static readonly List<RoadContainer> roads = new List<RoadContainer>()
         {
             //Rail
-            new RoadContainer() { inGameNamePrefix = "Train Track", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Train Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "rail" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Train Cargo Track", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Train Cargo Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "rail" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Train Station Track", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Train Station Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "platform" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Station Track Eleva", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Station Track Eleva", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "platform" },
                 new OSM.OSMWayTag() { k = "bridge", v = "yes" },
                 new OSM.OSMWayTag() { k = "level", v = "1" },
                 new OSM.OSMWayTag() { k = "layer", v = "1" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Station Track Sunken", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Station Track Sunken", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "platform" },
                 new OSM.OSMWayTag() { k = "tunnel", v = "yes" },
                 new OSM.OSMWayTag() { k = "level", v = "-1" },
                 new OSM.OSMWayTag() { k = "layer", v = "-1" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Metro Track", roadType = RoadContainer.Type.Subway, tags =
+            new RoadContainer() { inGameNamePrefix = "Metro Track", roadType = RoadContainer.Type.Subway, linkedOption = "subwayTrack", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "subway" },
                 new OSM.OSMWayTag() { k = "tunnel", v = "yes" },
                 new OSM.OSMWayTag() { k = "level", v = "-1" },
                 new OSM.OSMWayTag() { k = "layer", v = "-1" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Metro Station Track", roadType = RoadContainer.Type.Subway, tags =
+            new RoadContainer() { inGameNamePrefix = "Metro Station Track", roadType = RoadContainer.Type.Subway, linkedOption = "subwayTrack", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "subway" },
                 new OSM.OSMWayTag() { k = "tunnel", v = "yes" },
                 new OSM.OSMWayTag() { k = "level", v = "-1" },
                 new OSM.OSMWayTag() { k = "layer", v = "-1" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Oneway Train Track", roadType = RoadContainer.Type.Train, tags =
+            new RoadContainer() { inGameNamePrefix = "Oneway Train Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
             {
                 new OSM.OSMWayTag() { k = "railway", v = "rail" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
 
             //Paved paths
-            new RoadContainer() { inGameNamePrefix = "Pedestrian", roadType = RoadContainer.Type.Path, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian", roadType = RoadContainer.Type.Path, linkedOption = "paths", searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.Bicycle, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian", roadType = RoadContainer.Type.Cycleway, linkedOption = "cycleways", searchLimit = RoadContainer.Limit.Bicycle, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", roadType = RoadContainer.Type.Path, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", roadType = RoadContainer.Type.Path, linkedOption = "paths", searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.Bicycle, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", roadType = RoadContainer.Type.Cycleway, linkedOption = "cycleways", searchLimit = RoadContainer.Limit.Bicycle, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Pavement", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, linkedOption = "cycleways", searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Pedestrian", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian", inGameNamePostfix = "Bicycle", roadType = RoadContainer.Type.Cycleway, linkedOption = "cycleways", searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "cycleway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Pavement", roadType = RoadContainer.Type.Path, tags =
+            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Pavement", roadType = RoadContainer.Type.Path, linkedOption = "paths", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian", roadType = RoadContainer.Type.Path, tags =
+            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian", roadType = RoadContainer.Type.Path, linkedOption = "paths", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
             } },
 
             //Gravel paths
-            new RoadContainer() { inGameNamePrefix = "Pedestrian Gravel", roadType = RoadContainer.Type.Path, tags =
+            new RoadContainer() { inGameNamePrefix = "Pedestrian Gravel", roadType = RoadContainer.Type.Path, linkedOption = "paths", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "pedestrian" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Gravel Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Gravel Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "track" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Gravel", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Zonable Pedestrian Gravel", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "track" }
             } },
 
             //Highway
-            new RoadContainer() { inGameNamePrefix = "Highway Ramp", roadType = RoadContainer.Type.Highway, tags =
+            new RoadContainer() { inGameNamePrefix = "Highway Ramp", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "secondary_link" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Rural Highway", roadType = RoadContainer.Type.Highway, tags =
+            new RoadContainer() { inGameNamePrefix = "Rural Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "secondary_link" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Small Rural Highway", roadType = RoadContainer.Type.Highway, tags =
+            new RoadContainer() { inGameNamePrefix = "Small Rural Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "secondary_link" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Highway", roadType = RoadContainer.Type.Highway, tags =
+            new RoadContainer() { inGameNamePrefix = "Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "motorway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Highway Barrier", roadType = RoadContainer.Type.Highway, searchLimit = RoadContainer.Limit.Ground,tags =
+            new RoadContainer() { inGameNamePrefix = "Highway Barrier", roadType = RoadContainer.Type.Highway, linkedOption = "highways", searchLimit = RoadContainer.Limit.Ground, tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "motorway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Large Highway", roadType = RoadContainer.Type.Highway, tags =
+            new RoadContainer() { inGameNamePrefix = "Large Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "motorway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
 
             //Small roads
-            new RoadContainer() { inGameNamePrefix = "Basic Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Basic Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "residential" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Harbor Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Harbor Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "residential" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Oneway Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Oneway Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "road" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Oneway 3L", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Oneway 3L", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "road" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
 
             //Medium roads
-            new RoadContainer() { inGameNamePrefix = "Oneway 4L", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Oneway 4L", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "tertiary" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Medium Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Medium Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "tertiary" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Small Avenue", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Small Avenue", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "tertiary" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Medium Avenue", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Medium Avenue", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "tertiary" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Medium Avenue TL", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Medium Avenue TL", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "tertiary" }
             } },
 
             //Large roads
-            new RoadContainer() { inGameNamePrefix = "Large Road", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Large Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "secondary" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Large Road", inGameNamePostfix = "With Bus Lanes", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Large Road", inGameNamePostfix = "With Bus Lanes", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "secondary" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Large Oneway", roadType = RoadContainer.Type.Road, tags =
+            new RoadContainer() { inGameNamePrefix = "Large Oneway", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "trunk" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
 
             //Busways
-            new RoadContainer() { inGameNamePrefix = "Small Busway", roadType = RoadContainer.Type.Busway, tags =
+            new RoadContainer() { inGameNamePrefix = "Small Busway", roadType = RoadContainer.Type.Busway, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "bus_guideway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Small Busway One Way", roadType = RoadContainer.Type.Busway, tags =
+            new RoadContainer() { inGameNamePrefix = "Small Busway One Way", roadType = RoadContainer.Type.Busway, linkedOption = "roads", tags =
             {
                 new OSM.OSMWayTag() { k = "highway", v = "bus_guideway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
 
             //Air
-            new RoadContainer() { inGameNamePrefix = "Airplane Taxiway", roadType = RoadContainer.Type.Runway, tags =
+            new RoadContainer() { inGameNamePrefix = "Airplane Taxiway", roadType = RoadContainer.Type.Runway, linkedOption = "airports", tags =
             {
                 new OSM.OSMWayTag() { k = "aeroway", v = "taxiway" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Airplane Runway", roadType = RoadContainer.Type.Runway, tags =
+            new RoadContainer() { inGameNamePrefix = "Airplane Runway", roadType = RoadContainer.Type.Runway, linkedOption = "airports", tags =
             {
                 new OSM.OSMWayTag() { k = "aeroway", v = "runway" }
             } },
 
             //Other
-            new RoadContainer() { inGameNamePrefix = "Dam", roadType = RoadContainer.Type.Unknown, tags =
+            new RoadContainer() { inGameNamePrefix = "Dam", roadType = RoadContainer.Type.Unknown, linkedOption = "water", tags =
             {
                 new OSM.OSMWayTag() { k = "waterway", v = "dam" }
             } }
@@ -267,16 +267,19 @@ namespace Mapper.Managers
             {
                 foreach(RoadContainer road in roads)
                 {
-                    List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
-                    
-                    //allRoadTypes.Add(road);
-                    allRoadTypes.AddRange(roadPlusElevations);
-                    allRoadTypes.AddRange(AddRoadExtensions(road, roadDecorations));
-                    allRoadTypes.AddRange(AddRoadExtensions(road, roadLanes));
-
-                    foreach(RoadContainer roadPlusElevation in roadPlusElevations)
+                    if (road.linkedOption == "" || MapperOptionsManager.Instance().OptionChecked(road.linkedOption, MapperOptionsManager.Instance().exportOptions))
                     {
-                        allRoadTypes.AddRange(AddRoadExtensions(roadPlusElevation, roadLanes));
+                        List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
+
+                        //allRoadTypes.Add(road);
+                        allRoadTypes.AddRange(roadPlusElevations);
+                        allRoadTypes.AddRange(AddRoadExtensions(road, roadDecorations));
+                        allRoadTypes.AddRange(AddRoadExtensions(road, roadLanes));
+
+                        foreach (RoadContainer roadPlusElevation in roadPlusElevations)
+                        {
+                            allRoadTypes.AddRange(AddRoadExtensions(roadPlusElevation, roadLanes));
+                        }
                     }
                 }
             }

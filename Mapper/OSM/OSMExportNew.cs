@@ -36,23 +36,23 @@ namespace Mapper.OSM
             osmNodes.Clear();
             osmWays.Clear();
 
-            Debug.Log("Exporting nodes");
+            //Debug.Log("Exporting nodes");
             ExportNodes();
 
-            Debug.Log("Exporting ways");
+            //Debug.Log("Exporting ways");
             ExportWays();
 
-            Debug.Log("Exporting buildings");
+            //Debug.Log("Exporting buildings");
             ExportBuildings();
 
-            Debug.Log("Exporting ground and water");
+            //Debug.Log("Exporting ground and water");
             ExportGroundAndWater();
 
-            Debug.Log("Exporting routes");
+            //Debug.Log("Exporting routes");
             ExportRoutes();
 
-            UniqueLogger.PrintLog("Road name matches");
-            UniqueLogger.PrintLog("Road names missing from search");
+            //UniqueLogger.PrintLog("Road name matches");
+            //UniqueLogger.PrintLog("Road names missing from search");
 
             osm.node = osmNodes.ToArray();
             osm.way = osmWays.ToArray();
@@ -167,7 +167,7 @@ namespace Mapper.OSM
                         if (difference < 5.0F)
                         {
                             waterPoints[y, x] = difference;
-                            groundPoints[y, x] = groundLevel / 9;
+                            groundPoints[y, x] = groundLevel / 12; //Divided it, as it makes the points more rounded
                         }
                         else
                         {
@@ -181,7 +181,7 @@ namespace Mapper.OSM
                 contourY[y] = y * gridSize; //Still no idea...
             }
 
-            UniqueLogger.PrintLog("Levels");
+            //UniqueLogger.PrintLog("Levels");
 
             CreateContours(waterPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Water);
             CreateContours(groundPoints, contourX, contourY, contourZ, gridSize, steps, ContourType.Ground);
