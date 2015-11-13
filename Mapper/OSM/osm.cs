@@ -8,21 +8,21 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class osm
+    [System.Xml.Serialization.XmlRootAttribute(ElementName = "osm", Namespace = "", IsNullable = false)]
+    public partial class OSM
     {
 
         private string noteField;
 
-        private osmMeta metaField;
+        private OSMMeta metaField;
 
-        private osmBounds boundsField;
+        private OSMBounds boundsField;
 
-        private osmNode[] nodeField;
+        private OSMNode[] nodeField;
 
-        private osmWay[] wayField;
+        private OSMWay[] wayField;
 
-        private osmRelation[] relationField;
+        private OSMRelation[] relationField;
 
         private decimal versionField;
 
@@ -42,7 +42,7 @@ namespace Mapper.OSM
         }
 
         /// <remarks/>
-        public osmMeta meta
+        public OSMMeta meta
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Mapper.OSM
         }
 
         /// <remarks/>
-        public osmBounds bounds
+        public OSMBounds bounds
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("node")]
-        public osmNode[] node
+        public OSMNode[] node
         {
             get
             {
@@ -83,7 +83,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("way")]
-        public osmWay[] way
+        public OSMWay[] way
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("relation")]
-        public osmRelation[] relation
+        public OSMRelation[] relation
         {
             get
             {
@@ -140,7 +140,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmMeta
+    public partial class OSMMeta
     {
 
         private System.DateTime osm_baseField;
@@ -162,7 +162,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmBounds
+    public partial class OSMBounds
     {
 
         private decimal minlatField;
@@ -232,10 +232,10 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmNode
+    public partial class OSMNode
     {
 
-        private osmNodeTag[] tagField;
+        private OSMNodeTag[] tagField;
 
         private uint idField;
 
@@ -255,7 +255,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("tag")]
-        public osmNodeTag[] tag
+        public OSMNodeTag[] tag
         {
             get
             {
@@ -382,7 +382,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmNodeTag
+    public partial class OSMNodeTag
     {
 
         private string kField;
@@ -420,12 +420,12 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmWay
+    public partial class OSMWay
     {
 
-        private osmWayND[] ndField;
+        private OSMWayND[] ndField;
 
-        private osmWayTag[] tagField;
+        private OSMWayTag[] tagField;
 
         private uint idField;
 
@@ -441,7 +441,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("nd")]
-        public osmWayND[] nd
+        public OSMWayND[] nd
         {
             get
             {
@@ -455,7 +455,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("tag")]
-        public osmWayTag[] tag
+        public OSMWayTag[] tag
         {
             get
             {
@@ -554,7 +554,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmWayND
+    public partial class OSMWayND
     {
 
         private uint refField;
@@ -576,7 +576,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmWayTag
+    public partial class OSMWayTag
     {
 
         private string kField;
@@ -614,12 +614,12 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmRelation
+    public partial class OSMRelation
     {
 
-        private osmRelationMember[] memberField;
+        private OSMRelationMember[] memberField;
 
-        private osmRelationTag[] tagField;
+        private OSMRelationTag[] tagField;
 
         private uint idField;
 
@@ -635,7 +635,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("member")]
-        public osmRelationMember[] member
+        public OSMRelationMember[] member
         {
             get
             {
@@ -649,7 +649,7 @@ namespace Mapper.OSM
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("tag")]
-        public osmRelationTag[] tag
+        public OSMRelationTag[] tag
         {
             get
             {
@@ -748,7 +748,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmRelationMember
+    public partial class OSMRelationMember
     {
 
         private string typeField;
@@ -802,7 +802,7 @@ namespace Mapper.OSM
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class osmRelationTag
+    public partial class OSMRelationTag
     {
 
         private string kField;

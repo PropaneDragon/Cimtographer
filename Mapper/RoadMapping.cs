@@ -61,22 +61,22 @@ namespace Mapper
         SmallBuswayBridge,
         SmallAvenue,
         SmallRuralHighway,
-        OnewayRoad,
+        /*OnewayRoad,
         OnewayRoadDecorationTrees,
         OnewayRoadDecorationGrass,
         OnewayRoadElevated,
         OnewayRoadBridge,
         OnewayRoadSlope,
-        OnewayRoadTunnel,
-        Oneway3L,
-        Oneway4L,
-        LargeOneway,
+        OnewayRoadTunnel,*/
+        /*Oneway3L,
+        Oneway4L,*/
+        /*LargeOneway,
         LargeOnewayDecorationGrass,
         LargeOnewayDecorationTrees,
         LargeOnewayBridge,
         LargeOnewayElevated,
-        LargeOnewayRoadSlope,
-        MediumRoad,
+        LargeOnewayRoadSlope,*/
+        /*MediumRoad,
         MediumRoadBicycle,
         MediumRoadBus,
         MediumRoadElevated,
@@ -90,10 +90,10 @@ namespace Mapper
         MediumRoadBridge,
         MediumRoadTunnel,
         MediumRoadTunnelBike,
-        MediumRoadTunnelBus,
-        MediumAvenue,
-        MediumAvenueTL,
-        LargeRoad,
+        MediumRoadTunnelBus,*/
+        /*MediumAvenue,
+        MediumAvenueTL,*/
+        /*LargeRoad,
         LargeRoadBicycle,
         LargeRoadBridge,
         LargeRoadBus,
@@ -111,7 +111,7 @@ namespace Mapper
         LargeRoadTunnel,
         LargeRoadTunnelBus,
         LargeRoadTunnelWithBusLanes,
-        LargeRoadWithBusLanes,
+        LargeRoadWithBusLanes,*/
         LargeHighway,
         LargeHighwayElevated,
         LargeHighwaySlope,
@@ -375,7 +375,7 @@ namespace Mapper
         }
 
 
-        public bool Mapped(osmWay way, ref List<uint> points, ref RoadTypes rt, ref int layer)
+        public bool Mapped(OSMWay way, ref List<uint> points, ref RoadTypes rt, ref int layer)
         {
             if (way.tag == null || way.nd == null || way.nd.Count() < 2)
             {
@@ -588,7 +588,7 @@ namespace Mapper
 
         }
 
-        public void MapCoordinates(osmNode node)
+        public void MapCoordinates(OSMNode node)
         {
             if (node != null)
             {

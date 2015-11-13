@@ -53,19 +53,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Containers\BuildingContainer.cs" />
+    <Compile Include="Containers\ItemInversionContainer.cs" />
+    <Compile Include="Containers\KeyName.cs" />
+    <Compile Include="Containers\RoadContainer.cs" />
+    <Compile Include="Contours\Chains.cs" />
     <Compile Include="Contours\Conrec.cs" />
     <Compile Include="Curves\CurveFitting.cs" />
     <Compile Include="Curves\Douglas.cs" />
+    <Compile Include="CustomUI\OptionItem.cs" />
+    <Compile Include="CustomUI\UITitleBar.cs" />
+    <Compile Include="CustomUI\UIUtils.cs" />
+    <Compile Include="Managers\BuildingManager.cs" />
+    <Compile Include="Managers\KeyNameManager.cs" />
+    <Compile Include="Managers\RoadManager.cs" />
+    <Compile Include="Managers\UIOptionsManager.cs" />
     <Compile Include="MapperLoading.cs" />
     <Compile Include="MapperMod.cs" />
-    <Compile Include="OSM\osm.cs" />
-    <Compile Include="OSM\OSMExport.cs" />
-    <Compile Include="RoadData.cs" />
-    <Compile Include="RoadMaker.cs" />
-    <Compile Include="OSM\OSMInterface.cs" />
-    <Compile Include="Panels\MapperWindow.cs" />
+    <Compile Include="OSM\OSM.cs" />
+    <Compile Include="OSM\OSMExportNew.cs" />
+    <Compile Include="Panels\ExportPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoadMapping.cs" />
+    <Compile Include="RoadData.cs" />
+    <Compile Include="Utilities\Tagger.cs" />
+    <Compile Include="Utilities\Translations.cs" />
+    <Compile Include="Utilities\UniqueLogger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

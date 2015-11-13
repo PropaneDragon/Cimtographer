@@ -45,7 +45,7 @@ namespace Mapper
         }
     }
 
-    public class Way
+    /*public class Way
     {
         public bool valid = false;
         public List<uint> nodes = new List<uint>();
@@ -77,5 +77,5 @@ namespace Mapper
             valid = true;
             segments = list;
         }
-    }
+    }*/
 }
