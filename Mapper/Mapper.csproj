@@ -61,7 +61,9 @@
     <Compile Include="Contours\Conrec.cs" />
     <Compile Include="Curves\CurveFitting.cs" />
     <Compile Include="Curves\Douglas.cs" />
-    <Compile Include="CustomUI\OptionItem.cs" />
+    <Compile Include="Containers\OptionItem.cs" />
+    <Compile Include="CustomUI\UIFastList.cs" />
+    <Compile Include="CustomUI\UIOptionItem.cs" />
     <Compile Include="CustomUI\UITitleBar.cs" />
     <Compile Include="CustomUI\UIUtils.cs" />
     <Compile Include="Managers\BuildingManager.cs" />

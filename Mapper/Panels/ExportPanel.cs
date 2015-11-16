@@ -20,7 +20,7 @@ namespace Mapper.Panels
             this.isInteractive = true;
             this.enabled = true;
             this.width = 400;
-            this.height = 570;
+            this.height = 550;
 
             base.Awake();
         }
@@ -134,25 +134,32 @@ namespace Mapper.Panels
 
         private void CreateOptions()
         {
-            CreateOptionList(MapperOptionsManager.Instance().exportOptions);
+            UIFastList scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
+            scrollOptionsList.backgroundSprite = "UnlockingPanel";
+            scrollOptionsList.size = new Vector2(192, 350);
+            scrollOptionsList.canSelect = true;
+            scrollOptionsList.relativePosition = offset;
+            scrollOptionsList.rowHeight = 20f;
+            scrollOptionsList.rowsData.Clear();
+
+            offset += new Vector2(0, scrollOptionsList.height + 5);
+
+            CreateOptionList(MapperOptionsManager.Instance().exportOptions, scrollOptionsList);
+
+            scrollOptionsList.DisplayAt(0);
+            scrollOptionsList.selectedIndex = 0;
         }
 
-        private void CreateOptionList(Dictionary<string, OptionItem> options)
+        private void CreateOptionList(Dictionary<string, OptionItem> options, UIFastList list = null)
         {
-            foreach (KeyValuePair<string, OptionItem> option in options)
+            if (list != null)
             {
-                UICheckBox checkboxOption = CustomUI.UIUtils.CreateCheckBox(this);
-                checkboxOption.eventCheckChanged += CheckboxOption_eventCheckChanged;
-                checkboxOption.name = option.Key;
-                checkboxOption.text = option.Value.readableLabel;
-                checkboxOption.label.text = option.Value.readableLabel + (option.Value.enabled ? "" : " (x)");
-                checkboxOption.isChecked = option.Value.value;
-                checkboxOption.isEnabled = option.Value.enabled;
-                checkboxOption.width = 200;
-                checkboxOption.height = 40;
-                checkboxOption.relativePosition = offset;
+                foreach (KeyValuePair<string, OptionItem> option in options)
+                {
+                    option.Value.id = option.Key;
 
-                offset += new Vector2(0, 20);
+                    list.rowsData.Add(option.Value);
+                }
             }
         }
 
@@ -168,21 +175,6 @@ namespace Mapper.Panels
             catch
             {
                 buttonGenerate.text = "Export failed!";
-            }
-        }
-
-        private void CheckboxOption_eventCheckChanged(UIComponent component, bool value)
-        {
-            UICheckBox checkbox = component as UICheckBox;
-
-            if (MapperOptionsManager.Instance().exportOptions.ContainsKey(checkbox.name))
-            {
-                MapperOptionsManager.Instance().exportOptions[checkbox.name].value = value;
-                //Debug.Log("Set \"" + checkbox.name + "\" to " + value.ToString());
-            }
-            else
-            {
-                Debug.LogError("Could not find option \"" + checkbox.name + "\".");
             }
         }
 
