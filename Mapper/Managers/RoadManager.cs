@@ -169,6 +169,16 @@ namespace Mapper.Managers
                 new OSM.OSMWayTag() { k = "highway", v = "motorway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
+            new RoadContainer() { inGameNamePrefix = "Five-Lane Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "motorway" },
+                new OSM.OSMWayTag() { k = "oneway", v = "yes" }
+            } },
+            new RoadContainer() { inGameNamePrefix = "Four-Lane Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "motorway" },
+                new OSM.OSMWayTag() { k = "oneway", v = "yes" }
+            } },
 
             //Small roads
             new RoadContainer() { inGameNamePrefix = "Basic Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
@@ -264,7 +274,7 @@ namespace Mapper.Managers
                 new OSM.OSMWayTag() { k = "man_made", v = "pipeline" },
                 new OSM.OSMWayTag() { k = "location", v = "underground" }
             } },
-            new RoadContainer() { inGameNamePrefix = "Power Line", roadType = RoadContainer.Type.Electricity, linkedOption = "powerLines", tags =
+            new RoadContainer() { inGameNamePrefix = "Power Line", roadType = RoadContainer.Type.Electricity, linkedOption = "powerCables", tags =
             {
                 new OSM.OSMWayTag() { k = "power", v = "line" }
             } }
