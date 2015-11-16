@@ -58,6 +58,38 @@ namespace Mapper.Managers
                 new OSM.OSMWayTag() { k = "railway", v = "rail" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
+            new RoadContainer() { inGameNamePrefix = "Concrete Train Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "Illuminated Tracks", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "Illumin No Cable", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "No Cable Train Track", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "No Cable Train Elevat", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "No Cable Concrete Trac", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "Tram Tracks", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
+            new RoadContainer() { inGameNamePrefix = "Tram Tracks No Cable", roadType = RoadContainer.Type.Train, linkedOption = "rail", tags =
+            {
+                new OSM.OSMWayTag() { k = "railway", v = "rail" },
+            } },
 
             //Paved paths
             new RoadContainer() { inGameNamePrefix = "Pedestrian", roadType = RoadContainer.Type.Path, linkedOption = "paths", searchLimit = RoadContainer.Limit.ElevationsOnly, tags =
@@ -115,12 +147,12 @@ namespace Mapper.Managers
             } },
             new RoadContainer() { inGameNamePrefix = "Rural Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
-                new OSM.OSMWayTag() { k = "highway", v = "secondary_link" },
+                new OSM.OSMWayTag() { k = "highway", v = "motorway" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
             new RoadContainer() { inGameNamePrefix = "Small Rural Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
-                new OSM.OSMWayTag() { k = "highway", v = "secondary_link" }
+                new OSM.OSMWayTag() { k = "highway", v = "motorway" }
             } },
             new RoadContainer() { inGameNamePrefix = "Highway", roadType = RoadContainer.Type.Highway, linkedOption = "highways", tags =
             {
@@ -195,6 +227,11 @@ namespace Mapper.Managers
                 new OSM.OSMWayTag() { k = "highway", v = "trunk" },
                 new OSM.OSMWayTag() { k = "oneway", v = "yes" }
             } },
+            new RoadContainer() { inGameNamePrefix = "Large Oneway Road", roadType = RoadContainer.Type.Road, linkedOption = "roads", tags =
+            {
+                new OSM.OSMWayTag() { k = "highway", v = "trunk" },
+                new OSM.OSMWayTag() { k = "oneway", v = "yes" }
+            } },
 
             //Busways
             new RoadContainer() { inGameNamePrefix = "Small Busway", roadType = RoadContainer.Type.Busway, linkedOption = "roads", tags =
@@ -221,6 +258,15 @@ namespace Mapper.Managers
             new RoadContainer() { inGameNamePrefix = "Dam", roadType = RoadContainer.Type.Unknown, linkedOption = "water", tags =
             {
                 new OSM.OSMWayTag() { k = "waterway", v = "dam" }
+            } },
+            new RoadContainer() { inGameNamePrefix = "Water Pipe", roadType = RoadContainer.Type.Water, linkedOption = "waterPipes", tags =
+            {
+                new OSM.OSMWayTag() { k = "man_made", v = "pipeline" },
+                new OSM.OSMWayTag() { k = "location", v = "underground" }
+            } },
+            new RoadContainer() { inGameNamePrefix = "Power Line", roadType = RoadContainer.Type.Electricity, linkedOption = "powerLines", tags =
+            {
+                new OSM.OSMWayTag() { k = "power", v = "line" }
             } }
         };
 

@@ -29,9 +29,11 @@ namespace Mapper.Managers
             {"airports", new OptionItem() { readableLabel = "Airports", value = true }},
             {"taxis", new OptionItem() { readableLabel = "Taxi ranks", value = true }},
             {"power", new OptionItem() { readableLabel = "Power", value = true }},
+            {"powerCables", new OptionItem() { readableLabel = "Power Cables", value = false }},
             {"tunnels", new OptionItem() { readableLabel = "Tunnels", value = true }},
             {"bridges", new OptionItem() { readableLabel = "Bridges", value = true }},
-            {"water", new OptionItem() { readableLabel = "Water", value = true, enabled = false }}
+            {"water", new OptionItem() { readableLabel = "Water", value = true, enabled = false }},
+            {"waterPipes", new OptionItem() { readableLabel = "Water Pipes", value = false }}
         };
 
         public static Dictionary<string, OptionItem> additionalOptions = new Dictionary<string, OptionItem>()

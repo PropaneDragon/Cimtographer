@@ -154,6 +154,11 @@ namespace Mapper.Utilities
                 }
             }
 
+            if(buildingTags.Count == 0)
+            {
+                UniqueLogger.AddLog("Building names missing from search", building.Info.m_class.name, "");
+            }
+
             return buildingTags.Count > 0;
         }
 
@@ -165,7 +170,7 @@ namespace Mapper.Utilities
         public static string CleanUpName(string name)
         {
             Regex removeSteamworksData = new Regex("(?:[0-9]*\\.)(.*)(?:_Data.*)");
-            Regex addSpacingOnUppercase = new Regex("(.+?)([A-Z])");
+            Regex addSpacingOnUppercase = new Regex("([a-z]|[0-9])([A-Z])");
 
             name = removeSteamworksData.Replace(name, "$1");
             name = addSpacingOnUppercase.Replace(name, "$1 $2");
