@@ -20,7 +20,7 @@ namespace Mapper.Panels
             this.isInteractive = true;
             this.enabled = true;
             this.width = 400;
-            this.height = 550;
+            this.height = 400;
 
             base.Awake();
         }
@@ -91,12 +91,14 @@ namespace Mapper.Panels
             label.eventClicked += BottomLabel_eventClicked;
 
             UILabel versionLabel = this.AddUIComponent<UILabel>();
-            versionLabel.text = "v" + MapperOptionsManager.major.ToString() + "." + MapperOptionsManager.minor.ToString() + "." + MapperOptionsManager.revision.ToString();
+            versionLabel.text = "v" + MapperOptionsManager.major.ToString() + "." + MapperOptionsManager.minor.ToString() + "." + MapperOptionsManager.build.ToString();
             versionLabel.textScale = 0.4f;
-            versionLabel.size = new Vector2(20, 15);
-            versionLabel.relativePosition = new Vector2(380, height - 15);
+            versionLabel.size = new Vector2(40, 15);
+            versionLabel.relativePosition = new Vector2(360, height - 15);
             versionLabel.processMarkup = true;
             versionLabel.textColor = new Color32(180, 180, 180, 255);
+            versionLabel.textAlignment = UIHorizontalAlignment.Right;
+            versionLabel.tooltip = versionLabel.text + "." + MapperOptionsManager.revision.ToString();
         }
 
         private void CreateRightPanel()
@@ -136,18 +138,19 @@ namespace Mapper.Panels
         {
             UIFastList scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
             scrollOptionsList.backgroundSprite = "UnlockingPanel";
-            scrollOptionsList.size = new Vector2(192, 350);
+            scrollOptionsList.size = new Vector2(192, 250);
             scrollOptionsList.canSelect = true;
             scrollOptionsList.relativePosition = offset;
             scrollOptionsList.rowHeight = 20f;
             scrollOptionsList.rowsData.Clear();
+            scrollOptionsList.selectedIndex = -1;
 
             offset += new Vector2(0, scrollOptionsList.height + 5);
 
             CreateOptionList(MapperOptionsManager.exportOptions, scrollOptionsList);
 
-            scrollOptionsList.DisplayAt(0);
-            scrollOptionsList.selectedIndex = 0;
+            /*scrollOptionsList.DisplayAt(scrollOptionsList.listPosition);
+            scrollOptionsList.selectedIndex = 0;*/
         }
 
         private void CreateOptionList(Dictionary<string, OptionItem> options, UIFastList list = null)
