@@ -1,10 +1,15 @@
 ﻿using Mapper.CustomUI;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Mapper.Managers
 {
     static class MapperOptionsManager
     {
+        public static readonly int major = Assembly.GetExecutingAssembly().GetName().Version.Major;
+        public static readonly int minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
+        public static readonly int revision = Assembly.GetExecutingAssembly().GetName().Version.Revision;
+
         /// <summary>
         /// Options to set what to be exported
         /// </summary>

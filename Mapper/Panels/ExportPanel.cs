@@ -91,7 +91,7 @@ namespace Mapper.Panels
             label.eventClicked += BottomLabel_eventClicked;
 
             UILabel versionLabel = this.AddUIComponent<UILabel>();
-            versionLabel.text = "v0.2";
+            versionLabel.text = "v" + MapperOptionsManager.major.ToString() + "." + MapperOptionsManager.minor.ToString() + "." + MapperOptionsManager.revision.ToString();
             versionLabel.textScale = 0.4f;
             versionLabel.size = new Vector2(20, 15);
             versionLabel.relativePosition = new Vector2(380, height - 15);
