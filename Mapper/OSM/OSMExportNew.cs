@@ -304,7 +304,7 @@ namespace Mapper.OSM
                 buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 3 });
                 buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 2 });
                 buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 1 });
-                buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 4 });
+                buildingPaths.Add(new OSMWayND { @ref = (uint)unindexedNodeOffset - 4 }); //Need to connect back to the first point
 
                 returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = buildingPaths.ToArray(), tag = buildingTags.ToArray(), version = 1 };
             }

@@ -39,6 +39,12 @@ namespace Mapper.Managers
             {"findTramStations", new OptionItem() { readableLabel = "Automatically find tram lines", value = true, enabled = false }}
         };
 
+        /// <summary>
+        /// Gets the value of the option
+        /// </summary>
+        /// <param name="optionName">The option key</param>
+        /// <param name="optionList">The list to search for the option in</param>
+        /// <returns></returns>
         public static bool OptionChecked(string optionName, Dictionary<string, OptionItem> optionList)
         {
             bool returnValue = false;

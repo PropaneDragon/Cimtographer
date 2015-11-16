@@ -33,8 +33,6 @@ namespace Mapper.CustomUI
         protected override void OnClick(UIMouseEventParameter p)
         {
             base.OnClick(p);
-
-            //m_name.textColor = new Color32(255, 255, 255, 255);
         }
 
         public void Display(object data, bool isRowOdd)
@@ -81,16 +79,12 @@ namespace Mapper.CustomUI
 
         public void Select(bool isRowOdd)
         {
-            //m_name.textColor = new Color32(255, 255, 255, 255);
-
             background.backgroundSprite = "ListItemHighlight";
             background.color = new Color32(255, 255, 255, 255);
         }
 
         public void Deselect(bool isRowOdd)
         {
-            //m_name.textColor = options.enabled ? new Color32(255, 255, 255, 255) : new Color32(128, 128, 128, 255);
-
             if (isRowOdd)
             {
                 background.backgroundSprite = "UnlockingItemBackground";
