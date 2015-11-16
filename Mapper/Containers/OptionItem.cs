@@ -8,7 +8,7 @@
         /// <summary>
         /// The option value
         /// </summary>
-        public bool value = false;
+        public bool value = true;
 
         /// <summary>
         /// Whether the option can be edited

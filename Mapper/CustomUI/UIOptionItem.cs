@@ -37,27 +37,30 @@ namespace Mapper.CustomUI
 
         public void Display(object data, bool isRowOdd)
         {
-            OptionItem option = data as OptionItem;
-
-            if (option != null)
+            if (data != null)
             {
-                
-                checkboxOption.name = option.id;
-                checkboxOption.text = option.readableLabel;
-                checkboxOption.label.text = option.readableLabel + (option.enabled ? "" : " (x)");
-                checkboxOption.isChecked = option.value;
-                checkboxOption.isEnabled = option.enabled;
-                checkboxOption.width = this.width;
-                checkboxOption.height = 20;
+                OptionItem option = data as OptionItem;
 
-                if (isRowOdd)
+                if (option != null)
                 {
-                    background.backgroundSprite = "UnlockingItemBackground";
-                    background.color = new Color32(0, 0, 0, 128);
-                }
-                else
-                {
-                    background.backgroundSprite = null;
+
+                    checkboxOption.name = option.id;
+                    checkboxOption.text = option.readableLabel;
+                    checkboxOption.label.text = option.readableLabel + (option.enabled ? "" : " (x)");
+                    checkboxOption.isChecked = option.value;
+                    checkboxOption.isEnabled = option.enabled;
+                    checkboxOption.width = this.width;
+                    checkboxOption.height = 20;
+
+                    if (isRowOdd)
+                    {
+                        background.backgroundSprite = "UnlockingItemBackground";
+                        background.color = new Color32(0, 0, 0, 128);
+                    }
+                    else
+                    {
+                        background.backgroundSprite = null;
+                    }
                 }
             }
         }
