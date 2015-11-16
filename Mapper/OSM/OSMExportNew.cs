@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using Mapper.Contours;
+using Mapper.Managers;
 using Mapper.Utilities;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,12 @@ namespace Mapper.OSM
             //Debug.Log("Exporting routes");
             ExportRoutes();
 
+            //Debug.Log("Exporting districts");
+            ExportDistricts();
+
             //UniqueLogger.PrintLog("Road name matches");
-            //UniqueLogger.PrintLog("Road names missing from search");
+            UniqueLogger.PrintLog("Road names missing from search");
+            UniqueLogger.PrintLog("Building names missing from search");
 
             osm.node = osmNodes.ToArray();
             osm.way = osmWays.ToArray();
@@ -204,6 +209,33 @@ namespace Mapper.OSM
                     {
                         osmNodes.AddRange(generatedLines);
                     }
+                }
+            }
+        }
+
+        private void ExportDistricts()
+        {
+            if (MapperOptionsManager.OptionChecked("districts", MapperOptionsManager.exportOptions))
+            {
+                DistrictManager districtManager = Singleton<DistrictManager>.instance;
+                District[] districts = districtManager.m_districts.m_buffer;
+                int districtId = 0;
+
+                foreach (District district in districts)
+                {
+                    District.Flags districtFlags = district.m_flags;
+
+                    if (districtFlags.IsFlagSet(District.Flags.Created))
+                    {
+                        OSMNode generatedNode = CreateDistrict(districtId, district);
+
+                        if (generatedNode != null)
+                        {
+                            osmNodes.Add(generatedNode);
+                        }
+                    }
+
+                    ++districtId;
                 }
             }
         }
@@ -377,7 +409,7 @@ namespace Mapper.OSM
 
                     Translations.VectorToLonLat(position, out lon, out lat);
 
-                    var tags = new List<OSMNodeTag>();
+                    List<OSMNodeTag> tags = new List<OSMNodeTag>();
 
                     if (transportType == TransportInfo.TransportType.Bus)
                     {
@@ -395,6 +427,28 @@ namespace Mapper.OSM
             }
 
             return returnNodes;
+        }
+
+        private OSMNode CreateDistrict(int index, District district)
+        {
+            OSMNode returnNode = null;
+            DistrictManager districtManager = Singleton<DistrictManager>.instance;
+            string districtName = districtManager.GetDistrictName(index);
+
+            if (districtName != "")
+            {
+                Vector3 position = district.m_nameLocation;
+                List<OSMNodeTag> tags = new List<OSMNodeTag>();
+
+                returnNode = CreateNode(unindexedNodeOffset++, position);
+
+                tags.Add(new OSMNodeTag() { k = "name", v = districtName });
+                tags.Add(new OSMNodeTag() { k = "place", v = "suburb" });
+
+                returnNode.tag = tags.ToArray();
+            }
+
+            return returnNode;
         }
     }
 }
