@@ -68,9 +68,9 @@ namespace Mapper.CustomUI
         {
             UICheckBox checkbox = component as UICheckBox;
 
-            if (MapperOptionsManager.Instance().exportOptions.ContainsKey(checkbox.name))
+            if (MapperOptionsManager.exportOptions.ContainsKey(checkbox.name))
             {
-                MapperOptionsManager.Instance().exportOptions[checkbox.name].value = value;
+                MapperOptionsManager.exportOptions[checkbox.name].value = value;
                 //Debug.Log("Set \"" + checkbox.name + "\" to " + value.ToString());
             }
             else

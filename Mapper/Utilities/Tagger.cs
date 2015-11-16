@@ -48,13 +48,13 @@ namespace Mapper.Utilities
             byte wayElevation = (byte)(Mathf.Clamp((startNode.m_elevation + endNode.m_elevation) / 2, 0, 255));
             bool wayUnderground = startNode.m_flags.IsFlagSet(NetNode.Flags.Underground) || endNode.m_flags.IsFlagSet(NetNode.Flags.Underground);
 
-            if (wayUnderground && MapperOptionsManager.Instance().OptionChecked("tunnels", MapperOptionsManager.Instance().exportOptions))
+            if (wayUnderground && MapperOptionsManager.OptionChecked("tunnels", MapperOptionsManager.exportOptions))
             {
                 returnList.Add(new OSMWayTag { k = "tunnel", v = "yes" });
                 returnList.Add(new OSMWayTag { k = "level", v = (-Mathf.FloorToInt(wayElevation / 12)).ToString() });
                 returnList.Add(new OSMWayTag { k = "layer", v = (-Mathf.FloorToInt(wayElevation / 12)).ToString() });
             }
-            else if (wayElevation != 0 && MapperOptionsManager.Instance().OptionChecked("bridges", MapperOptionsManager.Instance().exportOptions))
+            else if (wayElevation != 0 && MapperOptionsManager.OptionChecked("bridges", MapperOptionsManager.exportOptions))
             {
                 returnList.Add(new OSMWayTag { k = "bridge", v = "yes" });
                 returnList.Add(new OSMWayTag { k = "level", v = Mathf.FloorToInt(wayElevation / 12).ToString() });
@@ -76,7 +76,7 @@ namespace Mapper.Utilities
 
             foreach (BuildingContainer buildingContainer in Managers.BuildingManager.buildings)
             {
-                if (buildingContainer.linkedOption == "" || MapperOptionsManager.Instance().OptionChecked(buildingContainer.linkedOption, MapperOptionsManager.Instance().exportOptions))
+                if (buildingContainer.linkedOption == "" || MapperOptionsManager.OptionChecked(buildingContainer.linkedOption, MapperOptionsManager.exportOptions))
                 {
                     List<OSMWayTag> containerTags = new List<OSMWayTag>();
                     bool validComparisons = true;
@@ -122,7 +122,7 @@ namespace Mapper.Utilities
                         }
                     }
 
-                    if (buildingContainer.useName && MapperOptionsManager.Instance().OptionChecked("buildingNames", MapperOptionsManager.Instance().exportOptions))
+                    if (buildingContainer.useName && MapperOptionsManager.OptionChecked("buildingNames", MapperOptionsManager.exportOptions))
                     {
                         containerTags.Add(new OSMWayTag() { k = "name", v = buildingIngameName });
                     }

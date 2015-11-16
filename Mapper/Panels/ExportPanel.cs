@@ -144,7 +144,7 @@ namespace Mapper.Panels
 
             offset += new Vector2(0, scrollOptionsList.height + 5);
 
-            CreateOptionList(MapperOptionsManager.Instance().exportOptions, scrollOptionsList);
+            CreateOptionList(MapperOptionsManager.exportOptions, scrollOptionsList);
 
             scrollOptionsList.DisplayAt(0);
             scrollOptionsList.selectedIndex = 0;

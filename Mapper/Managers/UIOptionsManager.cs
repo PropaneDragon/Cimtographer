@@ -3,21 +3,12 @@ using System.Collections.Generic;
 
 namespace Mapper.Managers
 {
-    class MapperOptionsManager
+    static class MapperOptionsManager
     {
-        private static MapperOptionsManager instance_ = null;
-
-        public static MapperOptionsManager Instance()
-        {
-            if(instance_ == null)
-            {
-                instance_ = new MapperOptionsManager();
-            }
-
-            return instance_;
-        }
-
-        public Dictionary<string, OptionItem> exportOptions = new Dictionary<string, OptionItem>()
+        /// <summary>
+        /// Options to set what to be exported
+        /// </summary>
+        public static Dictionary<string, OptionItem> exportOptions = new Dictionary<string, OptionItem>()
         {
             {"paths", new OptionItem() { readableLabel = "Paths", value = true }},
             {"cycleways", new OptionItem() { readableLabel = "Cycleways", value = true }},
@@ -43,12 +34,12 @@ namespace Mapper.Managers
             {"water", new OptionItem() { readableLabel = "Water", value = true, enabled = false }}
         };
 
-        public Dictionary<string, OptionItem> additionalOptions = new Dictionary<string, OptionItem>()
+        public static Dictionary<string, OptionItem> additionalOptions = new Dictionary<string, OptionItem>()
         {
             {"findTramStations", new OptionItem() { readableLabel = "Automatically find tram lines", value = true, enabled = false }}
         };
 
-        public bool OptionChecked(string optionName, Dictionary<string, OptionItem> optionList)
+        public static bool OptionChecked(string optionName, Dictionary<string, OptionItem> optionList)
         {
             bool returnValue = false;
 

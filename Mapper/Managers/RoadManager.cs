@@ -267,7 +267,7 @@ namespace Mapper.Managers
             {
                 foreach(RoadContainer road in roads)
                 {
-                    if (road.linkedOption == "" || MapperOptionsManager.Instance().OptionChecked(road.linkedOption, MapperOptionsManager.Instance().exportOptions))
+                    if (road.linkedOption == "" || MapperOptionsManager.OptionChecked(road.linkedOption, MapperOptionsManager.exportOptions))
                     {
                         List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
 
