@@ -10,8 +10,8 @@ namespace Mapper.Panels
 {
     class ExportPanel : UIPanel
     {
-        int titleOffset = 40;
-        Vector2 offset = Vector2.zero;
+        private int titleOffset = 40;
+        private Vector2 offset = Vector2.zero;
 
         UIButton buttonGenerate = null;
 
