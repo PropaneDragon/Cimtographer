@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapper", "Mapper\Mapper.csproj", "{6A388B44-88A7-4E9E-8C2D-F51E173DB061}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapperTests", "MapperTestsTests\MapperTests.csproj", "{71A204E0-2670-418E-BD45-726DAC1E80B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapperTests", "MapperTests\MapperTests.csproj", "{71A204E0-2670-418E-BD45-726DAC1E80B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

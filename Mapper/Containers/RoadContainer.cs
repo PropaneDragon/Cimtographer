@@ -11,7 +11,7 @@ namespace Mapper.Containers
         /// Road types. Used for filtering.
         /// </summary>
         [Flags]
-        public enum Type : byte
+        public enum Type
         {
             Unknown = 0,
             Path = 1 << 0,
@@ -21,14 +21,16 @@ namespace Mapper.Containers
             Train = 1 << 4,
             Subway = 1 << 5,
             Runway = 1 << 6,
-            Busway = 1 << 7
+            Busway = 1 << 7,
+            Water = 1 << 8,
+            Electricity = 1 << 9
         };
 
         /// <summary>
         /// Limits the search to only these types
         /// </summary>
         [Flags]
-        public enum Limit : byte
+        public enum Limit
         {
             None = 0,
             Tunnel = 1 << 0,

@@ -28,9 +28,12 @@ namespace Mapper.Utilities
             {
                 outputLog += logKey + " - - - - - -\n";
 
-                foreach (KeyValuePair<string, string> log in logs[logKey])
+                List<string> sortedKeys = logs[logKey].Keys.ToList();
+                sortedKeys.Sort();
+
+                foreach (string key in sortedKeys)
                 {
-                    outputLog += log.Key + ": " + log.Value + "\n";
+                    outputLog += key + ": " + logs[logKey][key] + "\n";
                 }
 
                 Debug.Log(outputLog);

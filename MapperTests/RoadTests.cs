@@ -2,7 +2,6 @@
 using Mapper.Managers;
 using Mapper.Containers;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace MapperTests.Tests
 {

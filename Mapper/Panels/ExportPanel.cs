@@ -10,17 +10,19 @@ namespace Mapper.Panels
 {
     class ExportPanel : UIPanel
     {
-        int titleOffset = 40;
-        Vector2 offset = Vector2.zero;
+        private int titleOffset = 40;
+        private Vector2 offset = Vector2.zero;
 
-        UIButton buttonGenerate = null;
+        public WhatsNewPanel whatsNewPanel = null;
+        public UIFastList scrollOptionsList = null;
+        private UIButton buttonGenerate = null;
 
         public override void Awake()
         {
             this.isInteractive = true;
             this.enabled = true;
             this.width = 400;
-            this.height = 570;
+            this.height = 400;
 
             base.Awake();
         }
@@ -54,7 +56,7 @@ namespace Mapper.Panels
 
             UILabel label = this.AddUIComponent<UILabel>();
             label.text =    "Oooo, shiny! Cimtographer's had a re-write, and should now work a\n" +
-                            "lot better than it did before. Check out the <color#d4fff8>workshop page</color> for\n" +
+                            "lot better than it did before. Check out the <color#94c6ff>workshop page</color> for\n" +
                             "more information.";
             label.textScale = 0.6f;
             label.size = new Vector2(600, 40);
@@ -91,12 +93,14 @@ namespace Mapper.Panels
             label.eventClicked += BottomLabel_eventClicked;
 
             UILabel versionLabel = this.AddUIComponent<UILabel>();
-            versionLabel.text = "v0.2";
+            versionLabel.text = "v" + MapperOptionsManager.major.ToString() + "." + MapperOptionsManager.minor.ToString() + "." + MapperOptionsManager.build.ToString();
             versionLabel.textScale = 0.4f;
-            versionLabel.size = new Vector2(20, 15);
-            versionLabel.relativePosition = new Vector2(380, height - 15);
+            versionLabel.size = new Vector2(40, 15);
+            versionLabel.relativePosition = new Vector2(360, height - 15);
             versionLabel.processMarkup = true;
             versionLabel.textColor = new Color32(180, 180, 180, 255);
+            versionLabel.textAlignment = UIHorizontalAlignment.Right;
+            versionLabel.tooltip = versionLabel.text + "." + MapperOptionsManager.revision.ToString();
         }
 
         private void CreateRightPanel()
@@ -109,6 +113,15 @@ namespace Mapper.Panels
             buttonGenerate.size = new Vector2(190, 30);
             buttonGenerate.relativePosition = offset;
             buttonGenerate.text = "Generate OSM map";
+
+            offset += new Vector2(0, buttonGenerate.height + 20);
+
+            UIButton buttonWhatsNew = CustomUI.UIUtils.CreateButton(this);
+            buttonWhatsNew.eventClicked += ButtonWhatsNew_eventClicked;
+            buttonWhatsNew.textPadding = new RectOffset(6, 6, 6, 6);
+            buttonWhatsNew.size = new Vector2(190, 30);
+            buttonWhatsNew.relativePosition = offset;
+            buttonWhatsNew.text = "What's new?";
 
             offset += new Vector2(0, buttonGenerate.height + 20);
 
@@ -134,25 +147,33 @@ namespace Mapper.Panels
 
         private void CreateOptions()
         {
-            CreateOptionList(MapperOptionsManager.Instance().exportOptions);
+            scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
+            scrollOptionsList.backgroundSprite = "UnlockingPanel";
+            scrollOptionsList.size = new Vector2(192, 250);
+            scrollOptionsList.canSelect = true;
+            scrollOptionsList.relativePosition = offset;
+            scrollOptionsList.rowHeight = 20f;
+            scrollOptionsList.rowsData.Clear();
+            scrollOptionsList.selectedIndex = -1;
+
+            offset += new Vector2(0, scrollOptionsList.height + 5);
+
+            CreateOptionList(MapperOptionsManager.exportOptions, scrollOptionsList);
+
+            scrollOptionsList.DisplayAt(0);
+            scrollOptionsList.selectedIndex = 0;
         }
 
-        private void CreateOptionList(Dictionary<string, OptionItem> options)
+        private void CreateOptionList(Dictionary<string, OptionItem> options, UIFastList list = null)
         {
-            foreach (KeyValuePair<string, OptionItem> option in options)
+            if (list != null)
             {
-                UICheckBox checkboxOption = CustomUI.UIUtils.CreateCheckBox(this);
-                checkboxOption.eventCheckChanged += CheckboxOption_eventCheckChanged;
-                checkboxOption.name = option.Key;
-                checkboxOption.text = option.Value.readableLabel;
-                checkboxOption.label.text = option.Value.readableLabel + (option.Value.enabled ? "" : " (x)");
-                checkboxOption.isChecked = option.Value.value;
-                checkboxOption.isEnabled = option.Value.enabled;
-                checkboxOption.width = 200;
-                checkboxOption.height = 40;
-                checkboxOption.relativePosition = offset;
+                foreach (KeyValuePair<string, OptionItem> option in options)
+                {
+                    option.Value.id = option.Key;
 
-                offset += new Vector2(0, 20);
+                    list.rowsData.Add(option.Value);
+                }
             }
         }
 
@@ -171,18 +192,12 @@ namespace Mapper.Panels
             }
         }
 
-        private void CheckboxOption_eventCheckChanged(UIComponent component, bool value)
+        private void ButtonWhatsNew_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
-            UICheckBox checkbox = component as UICheckBox;
-
-            if (MapperOptionsManager.Instance().exportOptions.ContainsKey(checkbox.name))
+            if(whatsNewPanel != null)
             {
-                MapperOptionsManager.Instance().exportOptions[checkbox.name].value = value;
-                //Debug.Log("Set \"" + checkbox.name + "\" to " + value.ToString());
-            }
-            else
-            {
-                Debug.LogError("Could not find option \"" + checkbox.name + "\".");
+                whatsNewPanel.Show();
+                whatsNewPanel.BringToFront();
             }
         }
 

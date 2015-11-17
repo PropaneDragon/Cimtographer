@@ -332,7 +332,24 @@ namespace Mapper.Managers
                     new OSM.OSMWayTag() { k = "tourism", v = "attraction" },
                     new OSM.OSMWayTag() { k = "building", v = "yes" }
                 }
-            }
+            },
+
+            new BuildingContainer()
+            {
+                linkedOption = "serviceBuildings",
+                buildingServices =
+                {
+                    new ItemInversionContainer<ItemClass.Service>(ItemClass.Service.Water)
+                },
+
+                tags =
+                {
+                    new OSM.OSMWayTag() { k = "man_made", v = "water_tower" },
+                    new OSM.OSMWayTag() { k = "pipeline", v = "substation" },
+                    new OSM.OSMWayTag() { k = "substation", v = "distribution" },
+                    new OSM.OSMWayTag() { k = "building", v = "yes" }
+                }
+            },
         };
     }
 }
