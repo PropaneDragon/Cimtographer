@@ -41,9 +41,8 @@ namespace Mapper.CustomUI
             {
                 OptionItem option = data as OptionItem;
 
-                if (option != null)
+                if (option != null && option.readableLabel != null && option.readableLabel != "" && checkboxOption != null && background != null)
                 {
-
                     checkboxOption.name = option.id;
                     checkboxOption.text = option.readableLabel;
                     checkboxOption.label.text = option.readableLabel + (option.enabled ? "" : " (x)");
@@ -82,20 +81,26 @@ namespace Mapper.CustomUI
 
         public void Select(bool isRowOdd)
         {
-            background.backgroundSprite = "ListItemHighlight";
-            background.color = new Color32(255, 255, 255, 255);
+            if (checkboxOption != null && background != null)
+            {
+                background.backgroundSprite = "ListItemHighlight";
+                background.color = new Color32(255, 255, 255, 255);
+            }
         }
 
         public void Deselect(bool isRowOdd)
         {
-            if (isRowOdd)
+            if (checkboxOption != null && background != null)
             {
-                background.backgroundSprite = "UnlockingItemBackground";
-                background.color = new Color32(0, 0, 0, 128);
-            }
-            else
-            {
-                background.backgroundSprite = null;
+                if (isRowOdd)
+                {
+                    background.backgroundSprite = "UnlockingItemBackground";
+                    background.color = new Color32(0, 0, 0, 128);
+                }
+                else
+                {
+                    background.backgroundSprite = null;
+                }
             }
         }
 

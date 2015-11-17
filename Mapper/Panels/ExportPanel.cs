@@ -13,7 +13,9 @@ namespace Mapper.Panels
         private int titleOffset = 40;
         private Vector2 offset = Vector2.zero;
 
-        UIButton buttonGenerate = null;
+        public WhatsNewPanel whatsNewPanel = null;
+        public UIFastList scrollOptionsList = null;
+        private UIButton buttonGenerate = null;
 
         public override void Awake()
         {
@@ -54,7 +56,7 @@ namespace Mapper.Panels
 
             UILabel label = this.AddUIComponent<UILabel>();
             label.text =    "Oooo, shiny! Cimtographer's had a re-write, and should now work a\n" +
-                            "lot better than it did before. Check out the <color#d4fff8>workshop page</color> for\n" +
+                            "lot better than it did before. Check out the <color#94c6ff>workshop page</color> for\n" +
                             "more information.";
             label.textScale = 0.6f;
             label.size = new Vector2(600, 40);
@@ -114,6 +116,15 @@ namespace Mapper.Panels
 
             offset += new Vector2(0, buttonGenerate.height + 20);
 
+            UIButton buttonWhatsNew = CustomUI.UIUtils.CreateButton(this);
+            buttonWhatsNew.eventClicked += ButtonWhatsNew_eventClicked;
+            buttonWhatsNew.textPadding = new RectOffset(6, 6, 6, 6);
+            buttonWhatsNew.size = new Vector2(190, 30);
+            buttonWhatsNew.relativePosition = offset;
+            buttonWhatsNew.text = "What's new?";
+
+            offset += new Vector2(0, buttonGenerate.height + 20);
+
             UILabel label = this.AddUIComponent<UILabel>();
             label.text =    "<color#94c6ff>Where's the import gone?</color>\n" +
                             "Sorry, but the import functionality\n" +
@@ -136,7 +147,7 @@ namespace Mapper.Panels
 
         private void CreateOptions()
         {
-            UIFastList scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
+            scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
             scrollOptionsList.backgroundSprite = "UnlockingPanel";
             scrollOptionsList.size = new Vector2(192, 250);
             scrollOptionsList.canSelect = true;
@@ -149,8 +160,8 @@ namespace Mapper.Panels
 
             CreateOptionList(MapperOptionsManager.exportOptions, scrollOptionsList);
 
-            /*scrollOptionsList.DisplayAt(scrollOptionsList.listPosition);
-            scrollOptionsList.selectedIndex = 0;*/
+            scrollOptionsList.DisplayAt(0);
+            scrollOptionsList.selectedIndex = 0;
         }
 
         private void CreateOptionList(Dictionary<string, OptionItem> options, UIFastList list = null)
@@ -178,6 +189,15 @@ namespace Mapper.Panels
             catch
             {
                 buttonGenerate.text = "Export failed!";
+            }
+        }
+
+        private void ButtonWhatsNew_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if(whatsNewPanel != null)
+            {
+                whatsNewPanel.Show();
+                whatsNewPanel.BringToFront();
             }
         }
 

@@ -10,11 +10,13 @@ namespace Mapper
     public class MapperLoading : LoadingExtensionBase
     {
         private GameObject exportPanelGameObject;
+        private GameObject whatsNewPanelGameObject;
         private GameObject buttonObject;
         private GameObject buttonObject2;
         private UIButton menuButton;
 
         private ExportPanel exportPanel;
+        private WhatsNewPanel whatsNewPanel;
         private LoadMode lastLoadMode_;
 
         public override void OnLevelLoaded(LoadMode mode)
@@ -27,9 +29,15 @@ namespace Mapper
             UIView view = UIView.GetAView();
             UITabstrip tabStrip = null;
 
+            whatsNewPanelGameObject = new GameObject("whatsNewPanel");
+            this.whatsNewPanel = whatsNewPanelGameObject.AddComponent<WhatsNewPanel>();
+            this.whatsNewPanel.transform.parent = view.transform;
+            this.whatsNewPanel.Hide();
+
             exportPanelGameObject = new GameObject("exportPanel");
             this.exportPanel = exportPanelGameObject.AddComponent<ExportPanel>();
             this.exportPanel.transform.parent = view.transform;
+            this.exportPanel.whatsNewPanel = whatsNewPanel;
             this.exportPanel.Hide();
 
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
@@ -55,6 +63,12 @@ namespace Mapper
                 this.exportPanel.isVisible = true;
                 this.exportPanel.BringToFront();
                 this.exportPanel.Show();
+
+                if(this.exportPanel.scrollOptionsList != null)
+                {
+                    this.exportPanel.scrollOptionsList.DisplayAt(0);
+                    this.exportPanel.scrollOptionsList.selectedIndex = 0;
+                }
             }
             else
             {
@@ -72,6 +86,11 @@ namespace Mapper
             if (exportPanelGameObject != null)
             {
                 GameObject.Destroy(exportPanelGameObject);
+            }
+
+            if(whatsNewPanelGameObject != null)
+            {
+                GameObject.Destroy(whatsNewPanelGameObject);
             }
 
             if (buttonObject != null)
