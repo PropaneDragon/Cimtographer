@@ -83,8 +83,8 @@ namespace Mapper.CustomUI
         {
             if (checkboxOption != null && background != null)
             {
-                background.backgroundSprite = "ListItemHighlight";
-                background.color = new Color32(255, 255, 255, 255);
+                /*background.backgroundSprite = "ListItemHighlight";
+                background.color = new Color32(255, 255, 255, 255);*/
             }
         }
 
