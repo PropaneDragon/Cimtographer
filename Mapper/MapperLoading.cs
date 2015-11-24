@@ -1,8 +1,12 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
 using Mapper.Panels;
+using Mapper.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Mapper
@@ -53,6 +57,7 @@ namespace Mapper
             buttonObject2 = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
             menuButton = tabStrip.AddTab("cimtographerMod", buttonObject, buttonObject2, new Type[] { }) as UIButton;
             menuButton.eventClick += uiButton_eventClick;
+            DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, RoadNamerUtilities.HaveMod().ToString());
         }
 
         private void uiButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -101,5 +106,7 @@ namespace Mapper
             }
         }
 
+       
     }
 }
+
