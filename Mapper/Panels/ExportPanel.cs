@@ -210,7 +210,13 @@ namespace Mapper.Panels
 
         private void BottomLabel_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
-            RoadNamerUtilities.testMethod();
+            if (RoadNamerManager.Instance().HaveMod())
+            {
+
+                bool blah = RoadNamerManager.Instance().populateObjects();
+                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, string.Format("stuff. {0}",blah ));
+
+            }
 
             //Steam.ActivateGameOverlayToWebPage("https://www.reddit.com/r/Cimtographer");
         }

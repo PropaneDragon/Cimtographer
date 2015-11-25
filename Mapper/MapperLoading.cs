@@ -57,7 +57,6 @@ namespace Mapper
             buttonObject2 = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
             menuButton = tabStrip.AddTab("cimtographerMod", buttonObject, buttonObject2, new Type[] { }) as UIButton;
             menuButton.eventClick += uiButton_eventClick;
-            DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, RoadNamerUtilities.HaveMod().ToString());
         }
 
         private void uiButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
