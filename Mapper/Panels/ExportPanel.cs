@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Mapper.CustomUI;
 using Mapper.OSM;
 using ColossalFramework.Steamworks;
+using Mapper.Utilities;
 
 namespace Mapper.Panels
 {
@@ -45,6 +46,7 @@ namespace Mapper.Panels
             this.relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
             this.backgroundSprite = "UnlockingPanel2";
             this.atlas = CustomUI.UIUtils.GetAtlas("Ingame");
+
         }
 
         private void CreateTopMessage()
@@ -208,7 +210,15 @@ namespace Mapper.Panels
 
         private void BottomLabel_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
-            Steam.ActivateGameOverlayToWebPage("https://www.reddit.com/r/Cimtographer");
+            if (RoadNamerManager.Instance().HaveMod())
+            {
+
+                bool blah = RoadNamerManager.Instance().populateObjects();
+                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, string.Format("stuff. {0}",blah ));
+
+            }
+
+            //Steam.ActivateGameOverlayToWebPage("https://www.reddit.com/r/Cimtographer");
         }
     }
 }

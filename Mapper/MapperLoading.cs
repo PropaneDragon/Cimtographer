@@ -1,8 +1,12 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
 using Mapper.Panels;
+using Mapper.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Mapper
@@ -101,5 +105,7 @@ namespace Mapper
             }
         }
 
+       
     }
 }
+
