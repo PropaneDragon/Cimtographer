@@ -19,7 +19,8 @@ namespace Mapper.OSM
         private List<OSMNode> osmNodes = new List<OSMNode>();
         private List<OSMWay> osmWays = new List<OSMWay>();
         private Vector3 cityCentre = Vector3.zero;
-        private int unindexedNodeOffset = 2048000, unindexedWayOffset = 0; //Unindexed, as I don't want to interfere with Cities indexing
+        private int unindexedNodeOffset = 2048000, unindexedWayOffset = 1; //Unindexed, as I don't want to interfere with Cities indexing
+        private bool haveRoadNamerMod = false;
 
         public OSMExportNew()
         {
@@ -36,6 +37,8 @@ namespace Mapper.OSM
         {
             osmNodes.Clear();
             osmWays.Clear();
+
+            haveRoadNamerMod = RoadNamerManager.Instance().HaveMod();
 
             //Debug.Log("Exporting nodes");
             ExportNodes();
@@ -97,14 +100,14 @@ namespace Mapper.OSM
         {
             NetManager netManager = Singleton<NetManager>.instance;
             NetSegment[] netSegments = netManager.m_segments.m_buffer;
-
-            foreach(NetSegment netSegment in netSegments)
+            for(int segmentId = 0; segmentId<netSegments.Length; segmentId++)
             {
+                NetSegment netSegment = netSegments[segmentId];
                 NetSegment.Flags segmentFlags = netSegment.m_flags;
 
                 if (segmentFlags.IsFlagSet(NetSegment.Flags.Created))
                 {
-                    OSMWay generatedWay = CreateWay(unindexedWayOffset++, netSegment);
+                    OSMWay generatedWay = CreateWay(unindexedWayOffset++, netSegment, (ushort)segmentId);
 
                     if (generatedWay != null)
                     {
@@ -252,7 +255,7 @@ namespace Mapper.OSM
             return returnNode;
         }
 
-        private OSMWay CreateWay(int index, NetSegment segment)
+        private OSMWay CreateWay(int index, NetSegment segment, ushort segmentId)
         {
             OSMWay returnWay = null;
             NetSegment.Flags segmentFlags = segment.m_flags;
@@ -300,6 +303,15 @@ namespace Mapper.OSM
 
                 if(Tagger.CreateWayTags(segment, out wayTags))
                 {
+                    if (haveRoadNamerMod)
+                    {
+
+                        string roadName = RoadNamerManager.Instance().getSegmentName((ushort)(segmentId));
+                        if (roadName != null)
+                        {
+                            wayTags.Add(new OSMWayTag { k = "name", v = StringUtilities.RemoveTags(roadName) });
+                        }
+                    }
                     returnWay = new OSMWay { changeset = 50000000, id = (uint)index, timestamp = DateTime.Now, user = "Cimtographer", nd = wayPaths.ToArray(), tag = wayTags.ToArray(), version = 1 };
                 }
                 else

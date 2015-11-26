@@ -78,6 +78,8 @@
     <Compile Include="Panels\WhatsNewPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoadData.cs" />
+    <Compile Include="Managers\RoadNamerManager.cs" />
+    <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="Utilities\Tagger.cs" />
     <Compile Include="Utilities\Translations.cs" />
     <Compile Include="Utilities\UniqueLogger.cs" />
