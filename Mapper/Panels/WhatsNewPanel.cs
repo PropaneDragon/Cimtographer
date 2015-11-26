@@ -52,7 +52,7 @@ namespace Mapper.Panels
             label.processMarkup = true;
 
             UIButton closeButton = CustomUI.UIUtils.CreateButton(this);
-            closeButton.eventClicked += CloseButton_eventClicked; ;
+            closeButton.eventClicked += CloseButton_eventClicked;
             closeButton.textPadding = new RectOffset(6, 6, 6, 6);
             closeButton.size = new Vector2(220, 30);
             closeButton.relativePosition = label.relativePosition + new Vector3(0, label.height + 20);
