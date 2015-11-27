@@ -42,24 +42,30 @@ namespace Mapper.Managers
             return roadNamerModAvailable;
         }
 
+        /// <summary>
+        /// Finds, via reflection, the Road Namer mod classes relevant to the Cimtographer mod( roadNameManager ), and load the required methods 
+        /// </summary>
+        /// <returns>Boolean value representing whether or not the RoadNamer classes were found and loaded into the RoadNameManager instance</returns>
         public bool populateObjects()
         {
             if (HaveMod())
             {
                 try
                 {
-                    var nameManagerClassList = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadNameManager" && x.Namespace == "RoadNamer.Managers").ToList();
-                    var roadContainerClassList = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadContainer" && x.Namespace == "RoadNamer.Managers").ToList();
+                    //Attempt to find the RoadNameManager and RoadContainer classes within the current loaded assemblies
+                    var roadNameManagerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadNameManager" && x.Namespace == "RoadNamer.Managers").Single();
+                    var roadContainerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadContainer" && x.Namespace == "RoadNamer.Managers").Single();
 
-                    if (nameManagerClassList.Count == 1 && roadContainerClassList.Count == 1)
+                    if (roadNameManagerClass != null && roadContainerClass != null)
                     {
-                        roadNameManagerClass = nameManagerClassList[0];
-                        roadContainerClass = roadContainerClassList[0];
+                        //If the classes were found, then get the singleton instance of the roadNameManager
                         roadNamerInstance = roadNameManagerClass.GetMethod("Instance", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
-
                         if (roadNamerInstance != null)
                         {
+                            //If the instance was found, populate the RoadNamerManager method fields with the methods 
                             getRoadNameMethod = roadNamerInstance.GetType().GetMethod("GetRoadName", BindingFlags.Public | BindingFlags.Instance);
+
+                            #if DEBUG
                             MemberInfo[] propertyInfos = roadNamerInstance.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
                             if (propertyInfos != null)
                             {
@@ -69,6 +75,7 @@ namespace Mapper.Managers
                                     DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, string.Format("roadManager property/type:{0}/{1}", propertyInfo.Name, propertyInfo.MemberType));
                                 }
                             }
+                            #endif
                             return getRoadNameMethod != null;
                         }
                     }
@@ -82,9 +89,16 @@ namespace Mapper.Managers
 
         }
 
+        /// <summary>
+        /// Wrapper for the "GetRoadName" method in the RoadNamer mod, invoked via reflection
+        /// </summary>
+        /// <param name="segmentId">the segment ID to search the names for</param>
+        /// <returns>The name asscociated with the segment, or null if not found</returns>
         public string getSegmentName(ushort segmentId)
         {
             string returnValue = null;
+
+            //If calling, mod classes should be available, but check again anyways
             bool getRoadNameMethodAvailable = false;
             if (getRoadNameMethod != null)
             {
@@ -94,6 +108,8 @@ namespace Mapper.Managers
             {
                 getRoadNameMethodAvailable = populateObjects();
             }
+
+            //If they are, then invoke the "GetRoadName" method, and get the returned name
             if (getRoadNameMethodAvailable)
             {
                 returnValue = getRoadNameMethod.Invoke(roadNamerInstance, new object[] { segmentId }) as string;
@@ -102,5 +118,5 @@ namespace Mapper.Managers
         }
     }
 
- 
+
 }
