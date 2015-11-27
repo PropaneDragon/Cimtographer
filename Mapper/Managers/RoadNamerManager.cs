@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Plugins;
+using ICities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Mapper.Managers
         public bool HaveMod()
         {
             bool roadNamerModAvailable = false;
-            roadNamerModAvailable = Singleton<PluginManager>.instance.GetPluginsInfo().Where(x => x.isEnabled && x.publishedFileID.AsUInt64 == 558960454UL).Count() == 1;
+            roadNamerModAvailable = Singleton<PluginManager>.instance.GetPluginsInfo().Where(x => x.isEnabled && (x.publishedFileID.AsUInt64 == 558960454UL || ((IUserMod)x.userModInstance).Name == "Road Namer" )).Count() == 1;
             return roadNamerModAvailable;
         }
 
@@ -53,8 +54,8 @@ namespace Mapper.Managers
                 try
                 {
                     //Attempt to find the RoadNameManager and RoadContainer classes within the current loaded assemblies
-                    var roadNameManagerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadNameManager" && x.Namespace == "RoadNamer.Managers").Single();
-                    var roadContainerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadContainer" && x.Namespace == "RoadNamer.Managers").Single();
+                    roadNameManagerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadNameManager" && x.Namespace == "RoadNamer.Managers").Single();
+                    roadContainerClass = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && x.Name == "RoadContainer" && x.Namespace == "RoadNamer.Managers").Single();
 
                     if (roadNameManagerClass != null && roadContainerClass != null)
                     {
