@@ -58,7 +58,7 @@ namespace Mapper.OSM
             //Debug.Log("Exporting districts");
             ExportDistricts();
 
-            //UniqueLogger.PrintLog("Road name matches");
+            UniqueLogger.PrintLog("Road name matches");
             UniqueLogger.PrintLog("Road names missing from search");
             UniqueLogger.PrintLog("Building names missing from search");
 

@@ -23,7 +23,8 @@ namespace Mapper.Containers
             Runway = 1 << 6,
             Busway = 1 << 7,
             Water = 1 << 8,
-            Electricity = 1 << 9
+            Electricity = 1 << 9,
+            Tram = 1 << 10
         };
 
         /// <summary>
