@@ -6,6 +6,7 @@ using Mapper.CustomUI;
 using Mapper.OSM;
 using ColossalFramework.Steamworks;
 using Mapper.Utilities;
+using System;
 
 namespace Mapper.Panels
 {
@@ -123,7 +124,7 @@ namespace Mapper.Panels
             buttonWhatsNew.textPadding = new RectOffset(6, 6, 6, 6);
             buttonWhatsNew.size = new Vector2(190, 30);
             buttonWhatsNew.relativePosition = offset;
-            buttonWhatsNew.text = "What's new?";
+            buttonWhatsNew.text = "What's new? (04/12/15)";
 
             offset += new Vector2(0, buttonGenerate.height + 20);
 
@@ -188,8 +189,9 @@ namespace Mapper.Panels
 
                 buttonGenerate.text = "Generate OSM map";
             }
-            catch
+            catch(Exception ex)
             {
+                Debug.LogException(ex);
                 buttonGenerate.text = "Export failed!";
             }
         }
@@ -210,15 +212,7 @@ namespace Mapper.Panels
 
         private void BottomLabel_eventClicked(UIComponent component, UIMouseEventParameter eventParam)
         {
-            if (RoadNamerManager.Instance().HaveMod())
-            {
-
-                bool blah = RoadNamerManager.Instance().populateObjects();
-                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, string.Format("stuff. {0}",blah ));
-
-            }
-
-            //Steam.ActivateGameOverlayToWebPage("https://www.reddit.com/r/Cimtographer");
+            Steam.ActivateGameOverlayToWebPage("https://www.reddit.com/r/Cimtographer");
         }
     }
 }

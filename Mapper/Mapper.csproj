@@ -70,6 +70,7 @@
     <Compile Include="Managers\KeyNameManager.cs" />
     <Compile Include="Managers\RoadManager.cs" />
     <Compile Include="Managers\UIOptionsManager.cs" />
+    <Compile Include="Managers\XmlRoads.cs" />
     <Compile Include="MapperLoading.cs" />
     <Compile Include="MapperMod.cs" />
     <Compile Include="OSM\OSM.cs" />

@@ -58,7 +58,7 @@ namespace Mapper.OSM
             //Debug.Log("Exporting districts");
             ExportDistricts();
 
-            //UniqueLogger.PrintLog("Road name matches");
+            UniqueLogger.PrintLog("Road name matches");
             UniqueLogger.PrintLog("Road names missing from search");
             UniqueLogger.PrintLog("Building names missing from search");
 
@@ -305,10 +305,11 @@ namespace Mapper.OSM
                 {
                     if (haveRoadNamerMod)
                     {
-
+                        // If road namer mod is available, then attempt to get the name asscociated with the segment, if any
                         string roadName = RoadNamerManager.Instance().getSegmentName((ushort)(segmentId));
                         if (roadName != null)
                         {
+                            //If a name is available, add a name tag
                             wayTags.Add(new OSMWayTag { k = "name", v = StringUtilities.RemoveTags(roadName) });
                         }
                     }
