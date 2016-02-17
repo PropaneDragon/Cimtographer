@@ -35,6 +35,8 @@ namespace Mapper.OSM
 
         public void Export()
         {
+            Debug.Log("Starting OSM Export.");
+
             osmNodes.Clear();
             osmWays.Clear();
 
@@ -70,6 +72,8 @@ namespace Mapper.OSM
 
             xmlSerialiser.Serialize(writer, osm);
             writer.Close();
+
+            Debug.Log("Finished OSM Export");
         }
 
         private void ExportNodes()
@@ -433,6 +437,11 @@ namespace Mapper.OSM
                         bool tramLine = transportLineName != null && (transportLineName.Contains("[t]") || transportLineName.ToLower().Contains("tram"));
                         tags.Add(new OSMNodeTag { k = "public_transport", v = "platform" });
                         tags.Add(new OSMNodeTag { k = "railway", v = tramLine ? "tram_stop" : "station" });
+                    }
+                    else if (transportType == TransportInfo.TransportType.Tram)
+                    {
+                        tags.Add(new OSMNodeTag { k = "public_transport", v = "platform" });
+                        tags.Add(new OSMNodeTag { k = "railway", v = "tram_stop" });
                     }
 
                     returnNodes.Add(new OSMNode { changeset = 50000000, id = (uint)unindexedNodeOffset++, version = 1, timestamp = DateTime.Now, user = "CS", lon = lon, lat = lat, tag = tags.ToArray() });

@@ -1,5 +1,9 @@
-﻿using Mapper.Containers;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
+using Mapper.CimTools;
+using Mapper.Containers;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -13,8 +17,10 @@ namespace Mapper.Managers
 
             try
             {
+                string modPath = CimToolsHandler.CimToolBase.Path.GetModPath();
+
                 XmlSerializer _serialiser = new XmlSerializer(typeof(XmlRoads));
-                TextReader _xmlReader = new StreamReader("roadDefinitions.xml");
+                TextReader _xmlReader = new StreamReader(modPath + Path.DirectorySeparatorChar + "roadDefinitions.xml");
 
                 roads = _serialiser.Deserialize(_xmlReader) as XmlRoads;
             }
