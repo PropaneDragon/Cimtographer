@@ -1,7 +1,9 @@
 ﻿using ColossalFramework.UI;
 using ICities;
+using Mapper.CimTools;
 using Mapper.Panels;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Mapper
@@ -10,13 +12,27 @@ namespace Mapper
     {
         private GameObject exportPanelGameObject;
         private GameObject whatsNewPanelGameObject;
-        private GameObject buttonObject;
-        private GameObject buttonObject2;
-        private UIButton menuButton;
+        private UIButton m_tabButton = null;
 
         private ExportPanel exportPanel;
         private WhatsNewPanel whatsNewPanel;
         private LoadMode lastLoadMode_;
+
+        public override void OnCreated(ILoading loading)
+        {
+            try //So we don't fuck up loading the city
+            {
+                LoadSprites();
+
+                CimToolsHandler.CimToolBase.DetailedLogger.Log("Loading mod");
+                CimToolsHandler.CimToolBase.Changelog.DownloadChangelog();
+                CimToolsHandler.CimToolBase.XMLFileOptions.Load();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
+        }
 
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -48,10 +64,35 @@ namespace Mapper
                 tabStrip = UIView.Find<UITabstrip>("MainToolstrip");
             }
 
-            buttonObject = UITemplateManager.GetAsGameObject("MainToolbarButtonTemplate");
-            buttonObject2 = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-            menuButton = tabStrip.AddTab("cimtographerMod", buttonObject, buttonObject2, new Type[] { }) as UIButton;
-            menuButton.eventClick += uiButton_eventClick;
+            if (m_tabButton == null)
+            {
+                GameObject buttonGameObject = UITemplateManager.GetAsGameObject("MainToolbarButtonTemplate");
+                GameObject pageGameObject = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
+                m_tabButton = tabStrip.AddTab("Road Namer", buttonGameObject, pageGameObject, new Type[] { }) as UIButton;
+
+                UITextureAtlas atlas = CimToolsHandler.CimToolBase.SpriteUtilities.GetAtlas("CimtographerIcons");
+
+                m_tabButton.eventClicked += uiButton_eventClick;
+                m_tabButton.tooltip = "Cimtographer";
+                m_tabButton.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+
+                if (atlas != null)
+                {
+                    m_tabButton.atlas = atlas;
+                    m_tabButton.normalFgSprite = "ToolbarFGIcon";
+                    m_tabButton.focusedFgSprite = "ToolbarFGIcon";
+                    m_tabButton.hoveredFgSprite = "ToolbarFGIcon";
+                    m_tabButton.disabledFgSprite = "ToolbarFGIcon";
+                    m_tabButton.pressedFgSprite = "ToolbarFGIcon";
+                    m_tabButton.focusedBgSprite = "ToolbarBGFocused";
+                    m_tabButton.hoveredBgSprite = "ToolbarBGHovered";
+                    m_tabButton.pressedBgSprite = "ToolbarBGPressed";
+                }
+                else
+                {
+                    Debug.LogError("Cimtographer: Could not find atlas.");
+                }
+            }
         }
 
         private void uiButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -73,7 +114,34 @@ namespace Mapper
             {
                 this.exportPanel.isVisible = false;
                 this.exportPanel.Hide();
-            }            
+            }
+        }
+
+        /// <summary>
+        /// Loads all custom sprites
+        /// </summary>
+        private void LoadSprites()
+        {
+            bool atlasSuccess = CimToolsHandler.CimToolBase.SpriteUtilities.InitialiseAtlas(CimToolsHandler.CimToolBase.Path.GetModPath() + Path.DirectorySeparatorChar + "UIIcons.png", "CimtographerIcons");
+
+            if (atlasSuccess)
+            {
+                bool spriteSuccess = true;
+
+                spriteSuccess = CimToolsHandler.CimToolBase.SpriteUtilities.AddSpriteToAtlas(new Rect(new Vector2(2, 2), new Vector2(36, 36)), "ToolbarFGIcon", "CimtographerIcons") && spriteSuccess;
+                spriteSuccess = CimToolsHandler.CimToolBase.SpriteUtilities.AddSpriteToAtlas(new Rect(new Vector2(40, 2), new Vector2(43, 49)), "ToolbarBGPressed", "CimtographerIcons") && spriteSuccess;
+                spriteSuccess = CimToolsHandler.CimToolBase.SpriteUtilities.AddSpriteToAtlas(new Rect(new Vector2(85, 2), new Vector2(43, 49)), "ToolbarBGHovered", "CimtographerIcons") && spriteSuccess;
+                spriteSuccess = CimToolsHandler.CimToolBase.SpriteUtilities.AddSpriteToAtlas(new Rect(new Vector2(130, 2), new Vector2(43, 49)), "ToolbarBGFocused", "CimtographerIcons") && spriteSuccess;
+
+                if (!spriteSuccess)
+                {
+                    Debug.LogError("Cimtographer: Failed to load some sprites!");
+                }
+            }
+            else
+            {
+                Debug.LogError("Cimtographer: Failed to load the atlas!");
+            }
         }
 
         public override void OnLevelUnloading()
@@ -91,16 +159,7 @@ namespace Mapper
             {
                 GameObject.Destroy(whatsNewPanelGameObject);
             }
-
-            if (buttonObject != null)
-            {
-                GameObject.Destroy(buttonObject);
-                GameObject.Destroy(buttonObject2);
-                UIComponent.Destroy(menuButton);
-            }
         }
-
-       
     }
 }
 
