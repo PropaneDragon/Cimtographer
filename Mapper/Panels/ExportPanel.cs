@@ -5,8 +5,13 @@ using System.Collections.Generic;
 using Mapper.CustomUI;
 using Mapper.OSM;
 using ColossalFramework.Steamworks;
-using Mapper.Utilities;
 using System;
+using ColossalFramework;
+using System.IO;
+using System.Diagnostics;
+using Mapper.Decompression;
+using CimTools.V1.Panels;
+using Mapper.CimTools;
 
 namespace Mapper.Panels
 {
@@ -15,6 +20,7 @@ namespace Mapper.Panels
         private int titleOffset = 40;
         private Vector2 offset = Vector2.zero;
 
+        private UpdatePanel _updatePanel = null;
         public WhatsNewPanel whatsNewPanel = null;
         public UIFastList scrollOptionsList = null;
         private UIButton buttonGenerate = null;
@@ -43,6 +49,7 @@ namespace Mapper.Panels
             CreateLeftPanel();
             CreateRightPanel();
             CreateBottomMessage();
+            InitialiseUpdatePanel(this);
 
             this.relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
             this.backgroundSprite = "UnlockingPanel2";
@@ -50,17 +57,22 @@ namespace Mapper.Panels
 
         }
 
+        private void InitialiseUpdatePanel(UIComponent parent)
+        {
+            _updatePanel = parent.AddUIComponent<UpdatePanel>();
+            _updatePanel.SetPositionSpeakyPoint(new Vector2(parent.position.x, parent.position.y) + new Vector2(parent.size.x - 10, 10));
+            _updatePanel.Initialise(CimToolsHandler.CimToolBase);
+        }
+
         private void CreateTopMessage()
         {
-            UISprite infoSprite = this.AddUIComponent<UISprite>();
+            /*UISprite infoSprite = this.AddUIComponent<UISprite>();
             infoSprite.spriteName = "NotificationIconExtremelyHappy";
             infoSprite.size = new Vector2(32, 32);
-            infoSprite.relativePosition = new Vector3(4, 40);
+            infoSprite.relativePosition = new Vector3(4, 40);*/
 
             UILabel label = this.AddUIComponent<UILabel>();
-            label.text =    "Oooo, shiny! Cimtographer's had a re-write, and should now work a\n" +
-                            "lot better than it did before. Check out the <color#94c6ff>workshop page</color> for\n" +
-                            "more information.";
+            label.text =    "";
             label.textScale = 0.6f;
             label.size = new Vector2(600, 40);
             label.width = 600;
@@ -69,7 +81,7 @@ namespace Mapper.Panels
             label.processMarkup = true;
             label.eventClicked += TopLabel_eventClicked;
 
-            titleOffset += 50;
+            titleOffset += 0;
         }
 
         private void CreateLeftPanel()
@@ -119,14 +131,14 @@ namespace Mapper.Panels
 
             offset += new Vector2(0, buttonGenerate.height + 20);
 
-            UIButton buttonWhatsNew = CustomUI.UIUtils.CreateButton(this);
+            /*UIButton buttonWhatsNew = CustomUI.UIUtils.CreateButton(this);
             buttonWhatsNew.eventClicked += ButtonWhatsNew_eventClicked;
             buttonWhatsNew.textPadding = new RectOffset(6, 6, 6, 6);
             buttonWhatsNew.size = new Vector2(190, 30);
             buttonWhatsNew.relativePosition = offset;
-            buttonWhatsNew.text = "What's new? (04/12/15)";
+            buttonWhatsNew.text = "What's new? (18/02/16)";
 
-            offset += new Vector2(0, buttonGenerate.height + 20);
+            offset += new Vector2(0, buttonGenerate.height + 20);*/
 
             UILabel label = this.AddUIComponent<UILabel>();
             label.text =    "<color#94c6ff>Where's the import gone?</color>\n" +
@@ -152,7 +164,7 @@ namespace Mapper.Panels
         {
             scrollOptionsList = UIFastList.Create<UIOptionItem>(this);
             scrollOptionsList.backgroundSprite = "UnlockingPanel";
-            scrollOptionsList.size = new Vector2(192, 250);
+            scrollOptionsList.size = new Vector2(192, 290);
             scrollOptionsList.canSelect = true;
             scrollOptionsList.relativePosition = offset;
             scrollOptionsList.rowHeight = 20f;
@@ -184,6 +196,8 @@ namespace Mapper.Panels
         {
             try
             {
+                RoadManager.ClearRoadTypes();
+
                 OSMExportNew osmExporter = new OSMExportNew();
                 osmExporter.Export();
 
@@ -191,8 +205,61 @@ namespace Mapper.Panels
             }
             catch(Exception ex)
             {
-                Debug.LogException(ex);
+                UnityEngine.Debug.LogException(ex);
                 buttonGenerate.text = "Export failed!";
+            }
+
+            try
+            {
+                string _osmName = Singleton<SimulationManager>.instance.m_metaData.m_CityName + ".osm";
+                string _fullOSMPath = Path.GetFullPath(_osmName);
+                string _modPath = CimTools.CimToolsHandler.CimToolBase.Path.GetModPath();
+
+                if (_modPath != null && _modPath != "" && _fullOSMPath != null && _fullOSMPath != "")
+                {
+                    string _mscriptPath = _modPath + Path.DirectorySeparatorChar + "MaperitiveScript.mscript";
+                    string _mrulesPath = _modPath + Path.DirectorySeparatorChar + "Cimtographer.mrules";
+                    string _zippedMaperitivePath = _modPath + Path.DirectorySeparatorChar + "Maperitive";
+                    string _citiesPath = Path.GetDirectoryName(_fullOSMPath);
+                    string _extractedMaperitivePath = _citiesPath + Path.DirectorySeparatorChar + "Maperitive";
+
+                    string _mscript = string.Format(
+                        "use-ruleset location=\"{0}\"" +
+                        "\r\napply-ruleset" +
+                        "\r\nload-source \"{1}\""
+                        , _mrulesPath, _fullOSMPath);
+
+                    File.Delete(_mscriptPath);
+                    StreamWriter _writer = File.CreateText(_mscriptPath);
+                    _writer.Write(_mscript);
+                    _writer.Flush();
+                    _writer.Close();
+
+                    if (_extractedMaperitivePath != null && _extractedMaperitivePath != "" && GzipExtractor.RemoveAllChangedNames(_zippedMaperitivePath, _extractedMaperitivePath, ".mapper"))
+                    {
+                        Process _maperitiveProcess = Process.Start(new ProcessStartInfo(
+                            _extractedMaperitivePath + Path.DirectorySeparatorChar + "Maperitive",
+                            "\"" + _mscriptPath + "\"")
+                        { UseShellExecute = false });
+
+                        if(_maperitiveProcess != null)
+                        {
+                            UIView.library.ShowModal("PauseMenu");
+                        }
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log("Couldn't decrypt the gzipped files from " + _zippedMaperitivePath + " to " + _extractedMaperitivePath);
+                    }
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("Could not find OSM at " + _fullOSMPath + " or mod path at " + _modPath);
+                }
+            }
+            catch(Exception ex)
+            {
+                UnityEngine.Debug.LogException(ex);
             }
         }
 

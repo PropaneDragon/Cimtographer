@@ -46,6 +46,11 @@ namespace Mapper.Managers
             new KeyValuePair<string, RoadContainer.Limit>("Bus", RoadContainer.Limit.Bus)
         };
 
+        public static void ClearRoadTypes()
+        {
+            allRoadTypes.Clear();
+        }
+
         /// <summary>
         /// Makes combinations of all possible road types.
         /// Some don't exist, but it catches everything that does
@@ -54,39 +59,37 @@ namespace Mapper.Managers
         /// <returns>A list of all possible road types in game</returns>
         public static List<RoadContainer> GetAllRoadTypes()
         {
-            allRoadTypes.Clear();
-            LoadRoadsFromFile();
-
-            foreach(RoadContainer road in roads)
+            if (allRoadTypes.Count == 0)
             {
-                if (road.linkedOption == "" || MapperOptionsManager.OptionChecked(road.linkedOption, MapperOptionsManager.exportOptions))
+                LoadRoadsFromFile();
+
+                foreach (RoadContainer road in roads)
                 {
-                    List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
-
-                    //allRoadTypes.Add(road);
-                    allRoadTypes.AddRange(roadPlusElevations);
-                    allRoadTypes.AddRange(AddRoadExtensions(road, roadDecorations));
-                    allRoadTypes.AddRange(AddRoadExtensions(road, roadLanes));
-
-                    foreach (RoadContainer roadPlusElevation in roadPlusElevations)
+                    if (road.linkedOption == "" || MapperOptionsManager.OptionChecked(road.linkedOption, MapperOptionsManager.exportOptions))
                     {
-                        allRoadTypes.AddRange(AddRoadExtensions(roadPlusElevation, roadLanes));
+                        List<RoadContainer> roadPlusElevations = AddRoadExtensions(road, roadElevations);
+
+                        //allRoadTypes.Add(road);
+                        allRoadTypes.AddRange(roadPlusElevations);
+                        allRoadTypes.AddRange(AddRoadExtensions(road, roadDecorations));
+                        allRoadTypes.AddRange(AddRoadExtensions(road, roadLanes));
+
+                        foreach (RoadContainer roadPlusElevation in roadPlusElevations)
+                        {
+                            allRoadTypes.AddRange(AddRoadExtensions(roadPlusElevation, roadLanes));
+                        }
                     }
                 }
             }
-
-            UniqueLogger.PrintLog("Road name matches");
-            UniqueLogger.PrintLog("Road names missing from search");
-            UniqueLogger.PrintLog("Building names missing from search");
 
             return allRoadTypes;
         }
 
         internal static void LoadRoadsFromFile()
         {
-            XmlRoads _xmlRoads = XmlRoadHandler.LoadRoads();
-
             Debug.Log("Loading roads from file...");
+
+            XmlRoads _xmlRoads = XmlRoadHandler.LoadRoads();
 
             foreach(XmlRoad road in _xmlRoads.roads)
             {

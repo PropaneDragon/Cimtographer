@@ -156,6 +156,7 @@ namespace Mapper.Utilities
 
             if(buildingTags.Count == 0)
             {
+                buildingTags.Add(new OSMWayTag() { k = "building", v = "yes" });
                 UniqueLogger.AddLog("Building names missing from search", building.Info.m_class.name, "");
             }
 

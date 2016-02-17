@@ -39,9 +39,9 @@ namespace Mapper.Panels
             label.autoHeight = true;
             label.width = 260;
             label.padding = new RectOffset(0, 40, 0, 0);
-            label.text =    "- Supports the <color#c8f582>Road Namer</color> mod, and exports all road names (thanks to tony56a).\n\n" +
-                            "- Should work in <color#c8f582>JOSM</color> without throwing an error (thanks again to tony56a).\n\n" +
-                            "- Some backend work.";
+            label.text =    "- <color#c8f582>More road support</color>.\n\n" +
+                            "- <color#c8f582>Snowfall</color> support!.\n\n" +
+                            "- Road definitions now load from XML.";
             label.textScale = 0.6f;
             label.relativePosition = new Vector2(40, 40);
             label.processMarkup = true;
