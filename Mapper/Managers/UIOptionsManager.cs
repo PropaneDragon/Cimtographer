@@ -22,7 +22,7 @@ namespace Mapper.Managers
             {"roads", new OptionItem() { readableLabel = "Roads" }},
             {"highways", new OptionItem() { readableLabel = "Highways" }},
             {"rail", new OptionItem() { readableLabel = "Rail" }},
-            {"subwayTrack", new OptionItem() { readableLabel = "Subway track", value = false, enabled = false }},
+            {"subwayTrack", new OptionItem() { readableLabel = "Subway track", value = false }},
             {"buildingNames", new OptionItem() { readableLabel = "Building names" }},
             {"serviceBuildings", new OptionItem() { readableLabel = "Service buildings" }},
             {"buildings", new OptionItem() { readableLabel = "Regular buildings" }},
@@ -39,7 +39,7 @@ namespace Mapper.Managers
             {"powerCables", new OptionItem() { readableLabel = "Power Cables", value = false }},
             {"tunnels", new OptionItem() { readableLabel = "Tunnels" }},
             {"bridges", new OptionItem() { readableLabel = "Bridges" }},
-            {"water", new OptionItem() { readableLabel = "Water", enabled = false }},
+            {"water", new OptionItem() { readableLabel = "Water" }},
             {"waterPipes", new OptionItem() { readableLabel = "Water Pipes", value = false }}
         };
 

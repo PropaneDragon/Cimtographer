@@ -160,6 +160,8 @@ namespace Mapper.Utilities
                 UniqueLogger.AddLog("Building names missing from search", building.Info.m_class.name, "");
             }
 
+            buildingTags.Add(new OSMWayTag() { k = "layer", v = "1000" });
+
             return buildingTags.Count > 0;
         }
 
